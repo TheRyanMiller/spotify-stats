@@ -20,6 +20,8 @@ const TrackList = require('./schemas/trackList');
 const TList = require('./schemas/tList');
 const Tracks = require('./schemas/track');
 const User = require('./schemas/user');
+const VisitLog = require('./schemas/visitLog');
+
 require('dotenv').config();
 
 const app = express();
@@ -29,7 +31,7 @@ const router = express.Router();
 //var ip="http://10.0.0.131";
 var ip="http://192.168.1.188";
 // connects our back end code with the database;
-console.log("abc: ",process.env.MONGO_URL_DEV)
+console.log("Mongo DEV URL: ",process.env.MONGO_URL_DEV)
 
 let dbString = process.env.MONGO_PROD_URL|| process.env.MONGO_URL_DEV;
 mongoose.connect(dbString, { useNewUrlParser: true });
@@ -179,21 +181,46 @@ app.use('/', router);
 router.post('/api/postTracks', (req, res) => {
   console.log("TRYING------------xxxxxxxxx--------");
   //return res.json({ success: true });
-  const { user, tracks } = req.body;
+  const { user, tracks } = req.body.data;
   //newTracks = [new Tracks(tracks[0]),new Tracks(tracks[1]),new Tracks(tracks[2])];
   let trackList = new TrackList({
     list: tracks, 
     user: user
   });
-  let tList = new TList({tracks: tracks[0].tracks})
-  console.log(tracks);
-  //console.log(trackList);
-  trackList.markModified('list');
-  trackList.markModified('list.tracks');
-  trackList.save((err) => {
-    if (err) return res.json({ success: false, error: err });
-    return res.json({ success: true });
+  let visitLog = new VisitLog(user);
+  visitLog.save(()=>{
+    console.log("Log Saved");
   });
+  
+  let uid = user.id;
+  let query = {
+    "user.id" : uid, 
+    createdAt: {$gte: new Date((new Date().getTime() - (14 * 24 * 60 * 60 * 1000)))}
+  };
+  console.log("=======FIND DATA=====");
+
+  let writeEnabled = true;
+  TrackList.find(
+    query,(err, data)=>{
+      data.map(obj => {
+        //console.log(obj.user.display_name);
+      })
+      if(data.length>0){
+        writeEnable = false;
+        console.log("Write Disabled")
+      }
+      if(writeEnabled){
+        trackList.markModified('list');
+        trackList.markModified('list.tracks'); 
+        trackList.save((err) => {
+          if (err) return res.json({ success: false, error: err });
+          return res.json({ success: true });
+        });
+      }
+  })
+
+  //Check db if recent records exist before saving everything
+  
 });
 
 // launch our backend into a port
