@@ -1,0 +1,136 @@
+.container{
+    width: 95%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: flex-start;
+  }
+
+  .content-row{
+      width: 100%
+  }
+  
+  .fontColor{
+    color: white;
+  }
+  
+  .master{
+    display: flex;
+    max-width: 750px;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 99%;
+  }
+  
+  .row {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    width: 95%;
+    border: 1px solid rgb(0, 0, 0);
+    margin: 2px 2px 2px 2px;
+    border: 2px solid #12003b;
+    background: rgb(34, 34, 34);
+    padding: 2px;
+    -moz-border-radius: 10px;
+    -webkit-border-radius: 10px;
+    box-shadow: 1px 1px 1px #000000;
+  }
+  
+  .row:hover{
+    background-color: rgb(79, 91, 138);
+  }
+  
+  .green{
+    color: rgb(82, 206, 82);
+  }
+  .white{
+    color: white;
+  }
+  
+  .col {
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    vertical-align: middle;
+  }
+  
+  .col0 {
+    flex: 1;
+    max-width: 25px;
+    min-width: 15px;
+    vertical-align: middle;
+    margin: auto 0;
+    font-size: 16px;
+  }
+
+  .col1 {
+    flex: 1;
+    max-width: 65px;
+    min-width: 45px;
+    vertical-align: middle;
+    margin: auto 0;
+  }
+  
+  .col2 {
+    flex: 4.5;
+  }
+  
+  .col3 {
+    flex: 1;
+    max-width: 75px;
+    min-width: 47px;
+    text-align: center;
+    vertical-align: middle;
+    }
+
+    .meter{
+        flex:1;
+    }
+    meter {
+        max-width: 40px;
+    }
+  
+  .titleline{
+    margin: 10px 0px 50px 0px;
+    line-height: 1.2;
+  }
+  .locationline{
+    margin: 10px 0px 50px 0px;
+    font-size: 13px;
+  }
+  .center{
+    text-align: center;
+    vertical-align: middle;
+    margin: auto 0px;
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+  }
+  .deck{
+    font-size: 10px;
+  }
+  .small{
+    font-size: 12px;
+  }
+  .large{
+    font-size: 20px;
+  }
+  .medium{
+    font-size: 16px;
+  }
+  
+  .filterOptions{
+    text-align: left;
+  }
+  
+  
+  .customOverlay {
+    background:  rgba(197, 197, 197, 0.76);
+  }
+  .customModal {
+    background:  rgb(58, 58, 58);
+    max-width: 500px;
+    width: 100%;
+    border: 3px black;
+  }
