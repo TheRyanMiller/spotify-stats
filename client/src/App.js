@@ -291,14 +291,14 @@ function App() {
 
   let hipsterOMeter = (<div className="center">
     <ReactSpeedometer 
-      value="88" 
-      minValue="0" 
-      maxValue="100"
-      needleTransitionDuration="4000" 
+      value={88}
+      minValue={0}
+      maxValue={100}
+      needleTransitionDuration={3000}
       startColor="#104423"
       endColor="#3aff82"
       needleColor="#ffffff"
-      valueTextFontSize="0"
+      valueTextFontSize={0}
       needleTranition="easeBounceIn"
       />
       <div className="fontColor paragraph large whacky">

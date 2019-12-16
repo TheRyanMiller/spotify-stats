@@ -31,7 +31,7 @@ let isProd = process.env.isPROD ? true : false;
 //var ip="http://10.0.0.131";
 var ip="http://192.168.1.188";
 // connects our back end code with the database;
-console.log("Mongo DEV URL: ",process.env.MONGO_URL_DEV)
+console.log("Mongo DEV URL: ",process.env.MONGO_URL_DEV);
 
 let dbString = process.env.MONGO_PROD_URL|| process.env.MONGO_URL_DEV;
 mongoose.connect(dbString, { useNewUrlParser: true });
@@ -50,6 +50,7 @@ if(isProd) {
 else{
   redirect_uri = ip+':3001/callback';
 }
+
 
 // USE middleware are executed every time a request is receieved
 // (optional) only made for logging and
