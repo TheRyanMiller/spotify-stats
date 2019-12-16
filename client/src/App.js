@@ -53,7 +53,6 @@ function App() {
     const params = getHashParams();
     const token = params.access_token;
     if(token && !isLoggedIn) setIsLoggedIn(true);
-    console.log("login set from tken")
     const spotifyApi = new SpotifyWebApi();
     if (token) {
       spotifyApi.setAccessToken(token);
@@ -68,7 +67,6 @@ function App() {
       spotifyApi.getMe()
 
     ]).then(result => {
-      console.log("API Calls are back. Total: ",result.length)
       sortTopArtists(result[0],"short_term");
       sortTopArtists(result[1],"medium_term");
       sortTopArtists(result[2],"long_term");
@@ -81,7 +79,6 @@ function App() {
 
   useEffect(() =>{
     if(Object.keys(currentUser).length>0){
-      console.log("Inserting into DB");
       let allTracks = [{term:"short_term",tracks:topTracksShort},{term:"medium_term",tracks:topTracksMedium},{term:"long_term",tracks:topTracksLong}];
       //Run Hipster-ometer logic
       let instance = axios.create({
@@ -93,9 +90,7 @@ function App() {
         tracks: allTracks,
         user: currentUser
       }})
-      .then((err, response) => {
-        console.log("Completed Insert into DB",response,err)
-      })
+      .then((err, response) => {      })
       .catch(err => console.log(err))
     }
   },[currentUser])
@@ -113,13 +108,6 @@ function App() {
       if(selectedDuration==="long_term") setTopTracks(topTracksLong);
     }
   },[selectedDuration]);
-
-  useEffect(() => {
-    console.log("YOYOYOY")
-    if(!isLoggedIn) {
-      console.log("YOYOYOY")
-    }
-  },[isLoggedIn]);
 
   //let ip = "http://10.0.0.131";
   let serverip = "http://192.168.1.188:3001"
@@ -267,12 +255,10 @@ function App() {
     }
 
   let handleTypeClick = (event) => {
-    console.log("selected type : ",event.target.value)
     if(event.target.value==="artists"){
       setSelectedArtists(true);
       setSelectedTracks(false);
       setSelectedHipsterOMeter(false);
-      console.log("duration: ",selectedDuration)
       if(selectedDuration==="short_term") {setTopArtists(topArtistsShort); setTextFilter("Now viewing top short term (past ~4 weeks) artists.")};
       if(selectedDuration==="medium_term") {setTopArtists(topArtistsMedium); setTextFilter("Now viewing top medium term (past ~6 months) artists.")};
       if(selectedDuration==="long_term") {setTopArtists(topArtistsLong); setTextFilter("Now viewing top long term (several years) artists.")};
@@ -282,7 +268,6 @@ function App() {
       setSelectedArtists(false);
       setSelectedTracks(true);
       setSelectedHipsterOMeter(false);
-      console.log("duration: ",selectedDuration)
       if(selectedDuration==="short_term") {setTopTracks(topTracksShort); setTextFilter("Now viewing top short term (past ~4 weeks) songs.")};
       if(selectedDuration==="medium_term") {setTopTracks(topTracksMedium); setTextFilter("Now viewing top medium term (past ~6 months) songs.")};
       if(selectedDuration==="long_term") {setTopTracks(topTracksLong); setTextFilter("Now viewing top long term (several years) songs.")};
@@ -294,7 +279,6 @@ function App() {
       setTextFilter("");
     }
 
-    console.log("==========")
   }
 
   let durationButtons = (<div>

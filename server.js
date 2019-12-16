@@ -44,8 +44,12 @@ let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let redirect_uri = "";
 
-if(isProd) redirct_uri = "https://spotify-rankings.herokuapp.com/callback";
-else{redirect_uri = ip+':3001/callback';}
+if(isProd) {
+  redirct_uri = "https://spotify-rankings.herokuapp.com/callback";
+}
+else{
+  redirect_uri = ip+':3001/callback';
+}
 
 // USE middleware are executed every time a request is receieved
 // (optional) only made for logging and
