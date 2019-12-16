@@ -186,7 +186,7 @@ function App() {
 
 
   const handleLogout = () => {
-    window.location.href = ip+'/logout';
+    window.location.href = serverip+'/logout';
   }
   
   let loginLink = (
