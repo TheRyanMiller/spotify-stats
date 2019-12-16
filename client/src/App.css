@@ -1,5 +1,9 @@
 .App {
   text-align: left;
+  
+}
+
+.whacky{
   font-family: 'Patrick Hand', cursive;
 }
 
@@ -109,18 +113,43 @@ button.btn-xsm{
 .centerNoFlex{
   text-align: center;
   vertical-align: middle;
-  margin: auto 0px;
+  margin: auto 0;
   align-items: center;
   
 }
 .sideSpace{
   margin-right: 5px;
 }
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+.navbar {
+  background-color: rgb(0, 0, 0);
+  overflow: hidden;
+  position: fixed;
+  bottom: 0;
+  margin: auto 0;
+  text-align: center;
+  vertical-align: middle;
+  width: 100%;
+}
+
+/* Style the links inside the navigation bar */
+.navbar a {
+  display: block;
+  color: #f2f2f2;
+  text-align: center;
+  padding: 14px 16px;
+  text-decoration: none;
+  font-size: 12px;
+}
+
+/* Change the color of links on hover */
+.navbar a:hover {
+  background-color: #ddd;
+  color: black;
+}
+
+/* Add a color to the active/current link */
+.navbar a.active {
+  background-color: #4CAF50;
+  color: white;
 }

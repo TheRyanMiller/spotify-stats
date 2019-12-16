@@ -14,6 +14,7 @@ import ReactSpeedometer from "react-d3-speedometer"
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [showAbout, setShowAbout] = useState(false);
   //Artists
   const [topArtists, setTopArtists] = useState([]);
   const [topArtistsShort, setTopArtistsShort] = useState([]);
@@ -144,7 +145,7 @@ function App() {
       return {
         "id":item.id,
         "name":item.name, 
-        "popularity":100-item.popularity,
+        "popularity":item.popularity,
         "followers":item.followers.total,
         "imgUrl":item.images[2] ? item.images[2].url : ""
       }
@@ -166,7 +167,7 @@ function App() {
         "name":item.name,
         "artist": artist, 
         "album":item.album.name,
-        "popularity":100-item.popularity,
+        "popularity":item.popularity,
         "albumImgUrl":item.album.images[2] ? item.album.images[2].url : ""
       }
     })
@@ -174,6 +175,10 @@ function App() {
     if(term === "medium_term") setTopTracksMedium(tracks);
     if(term === "long_term") setTopTracksLong(tracks);
   }
+  const handleAbout = () => {
+    setShowAbout(true);
+  }
+
 
   const handleLogout = () => {
     window.location.href = ip+':3001/logout';
@@ -206,7 +211,7 @@ function App() {
             <div className="hcol0"><b>Rank</b></div>
             <div className={"col1 center"}></div>
             <div className="hcol2"><b>Artist</b></div>
-            <div className="meterCol">Hipster cred</div>
+            <div className="meterCol">Popularity</div>
         </div>
 
         </div>
@@ -228,7 +233,7 @@ function App() {
             <div className="hcol0">Rank</div>
             <div className={"col1 center"}></div>
             <div className="hcol2">Track</div>
-            <div className="meterCol">Hipster cred</div>
+            <div className="meterCol">Popularity</div>
         </div>
 
         </div>
@@ -289,9 +294,9 @@ function App() {
 
   let durationButtons = (<div>
     <ButtonGroup className="someSpace btn-xsm" aria-label="Term">
-              <Button size="sm" value="short_term" onClick={handleDurationClick} variant={ selectedDuration==="short_term" ? "primary" : "secondary" }>4 weeks</Button>
-              <Button size="sm" value="medium_term" onClick={handleDurationClick} variant={ selectedDuration==="medium_term" ? "primary" : "secondary" }>6 months</Button>
-              <Button size="sm" value="long_term" onClick={handleDurationClick} variant={ selectedDuration==="long_term" ? "primary" : "secondary" }>All-time</Button>
+              <Button size="sm" value="short_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="short_term" ? "primary" : "secondary" }>past 4 weeks</Button>
+              <Button size="sm" value="medium_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="medium_term" ? "primary" : "secondary" }>past 6 months</Button>
+              <Button size="sm" value="long_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="long_term" ? "primary" : "secondary" }>All-time</Button>
             </ButtonGroup>
       </div>)
 
@@ -307,41 +312,53 @@ function App() {
       valueTextFontSize="0"
       needleTranition="easeBounceIn"
       />
-      <div className="fontColor paragraph">
-  Your Hipster score is calculated using Spotify's "popularity" metric for all the artists and tracks on your list. <br />
-  <p className="center">Your Hipster Score is {hipsterScore}</p><br />
-  Use this link to share your score on Facebook.
+      <div className="fontColor paragraph large whacky">
+      <p className="center ">Your Hipster Score is {hipsterScore}</p><br />
+        Your Hipster score is calculated using a patented, highly confidential, and top secret algorithm based on Spotify's "popularity" metric for 
+        each of the artists and tracks in your rankings. <br />
+        
       </div>
       </div>)
 
-  let nav = (<div>
-    <h1 className="siteHeader">Hipster Cred Calculator</h1>
-    <a className="btn-xs specialbtn fontColor" onClick={handleLogout} href="/#"> About </a> | 
-    <a className="btn-xs specialbtn fontColor" onClick={handleLogout} href="/#"> Switch User </a>
-    <br /><br /><br />
+  let title = (<div>
+    <h1 className="siteHeader whacky">My Spotify Rankings</h1>
+    <br />
   </div>)
+
+  let nav = (<div className="navbar">
+    <Button className="fontColor btn-outline-light" size="sm" variant="black" onClick={handleAbout}> About this site</Button>
+    <Button className="fontColor btn-outline-light" size="sm" variant="black" onClick={handleLogout}> Switch User </Button>
+  </div>)
+
+  let about = <div className="fontColor center">
+  {title}
+  <p className="paragraph">This site presents data collected from Spotify to populate your rankings lists and Hipster score. This app is registered with Spotify 
+    and does not have access to your account. It can only access a small amount of data about your top artists and tracks 
+    when you login and approve.</p>
+  <Button size="sm" onClick={()=>{setShowAbout(false)}}>Back</Button>
+</div>
 
 
   let body = (<>
       <div className="center fontColor  ">
-        {nav}
+        {title}
         <div className="toggleControls center">
           
           <ButtonGroup className="someSpace" aria-label="Basic example">
-            <Button value="artists" onClick={handleTypeClick} className="sideSpace" variant={ selectedArtists ? "primary" : "secondary" }>Artists</Button>
-            <Button value="tracks" onClick={handleTypeClick} className="sideSpace" variant={ selectedTracks ? "primary" : "secondary" }>Songs</Button>
-            <Button value="hipsterometer" onClick={handleTypeClick} className="btn-outline-danger sideSpace" variant={ selectedHipsterOMeter ? "primary" : "secondary" }>Hipster-o-Meter</Button>
+            <Button value="artists" onClick={handleTypeClick} className="sideSpace" size="md" variant={ selectedArtists ? "primary" : "secondary" }>Top Artists</Button>
+            <Button value="tracks" onClick={handleTypeClick} className="sideSpace" size="md" variant={ selectedTracks ? "primary" : "secondary" }>Top Songs</Button>
+            <Button value="hipsterometer" onClick={handleTypeClick} className="btn-outline-danger sideSpace whacky" size="md" variant={ selectedHipsterOMeter ? "black" : "secondary" }>Hipster-o-Meter</Button>
           </ButtonGroup>
           {!selectedHipsterOMeter ? durationButtons : ""}
           </div>
-          <span className="textFilter">{textFilter}</span>
+          <span className="textFilter">{/*textFilter*/}</span>
           </div>
       <br />
       <br />
       {selectedHipsterOMeter ? hipsterOMeter : ""}
       {selectedArtists ? buildArtistList(topArtists) : ""}
       {selectedTracks ? buildTrackList(topTracks) : ""}
-      
+      {topArtists.length>0 ? nav : ""}
     
     </>
   )
@@ -355,8 +372,9 @@ function App() {
   return (
     <div className='App'>
       {isLoggedIn ? logOutLink : ""}
-      {isLoggedIn ? body : homepage}
-
+      {isLoggedIn && !showAbout ? body : ""}
+      {isLoggedIn && showAbout ? about : ""}
+      {!isLoggedIn && !showAbout ? homepage : ""}
     </div>
   );
 }

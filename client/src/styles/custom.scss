@@ -12,10 +12,11 @@ $error-color: #D50000;
 $theme-colors: (
   "primary": #1ED761,
   "secondary": #202020,
+  "thirdary": rgb(61, 248, 129),
   "highlight": #525252,
   "danger": #fd8983
 );
 $body-bg: #000;
 
-@import url('https://fonts.googleapis.com/css?family=Delius|Inder|Montserrat&display=swap');
+@import url('https://fonts.googleapis.com/css?family=Patrick+Hand&display=swap');
 @import '~bootstrap/scss/bootstrap.scss';
