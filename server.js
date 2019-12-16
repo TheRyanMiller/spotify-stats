@@ -42,7 +42,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let redirect_uri = "";
-let dest = ip+":3000/#";
+let dest = "";
 
 if(isProd) {
   redirect_uri = "https://spotify-rankings.herokuapp.com/callback";
@@ -50,10 +50,12 @@ if(isProd) {
 }
 else{
   redirect_uri = ip+':3001/callback';
+  dest = ip+":3000/#";
 }
 
 console.log("REDIRECT URI=================================================: ",redirect_uri);
-console.log("REDIRECT URI: ",redirect_uri);
+console.log(redirect_uri, isProd, process.env.isPROD)
+console.log("dest: ",dest);
 
 
 // USE middleware are executed every time a request is receieved
@@ -108,7 +110,7 @@ app.get('/logout', function(req, res) {
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  let scope = 'user-read-private user-read-email user-read-playback-state user-top-read';
+  let scope = 'user-read-private user-read-email user-top-read';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',

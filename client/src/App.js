@@ -173,13 +173,17 @@ function App() {
   }
 
 
+  const handleLogin = () => {
+    window.location.href = serverip+'/login';
+  }
+  
   const handleLogout = () => {
     window.location.href = serverip+'/logout';
   }
-  
+
   let loginLink = (
     <div>
-      <Button className="btn-sm" onClick={handleLogout}> Login to Spotify </Button>
+      <Button className="btn-sm" onClick={handleLogin}> Login to Spotify </Button>
     </div>
   )
 
