@@ -85,7 +85,7 @@ function App() {
       let allTracks = [{term:"short_term",tracks:topTracksShort},{term:"medium_term",tracks:topTracksMedium},{term:"long_term",tracks:topTracksLong}];
       //Run Hipster-ometer logic
       let instance = axios.create({
-        baseURL: process.env.REACT_APP_PROD_API || process.env.REACT_APP_API,
+        baseURL: process.env.REACT_APP_API_PROD || process.env.REACT_APP_API,
         timeout: 10000,
         headers: {'X-Custom-Header': 'foobar'}
       });
