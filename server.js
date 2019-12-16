@@ -42,9 +42,11 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let redirect_uri = "";
+let dest = ip+":3000/#";
 
 if(isProd) {
   redirect_uri = "https://spotify-rankings.herokuapp.com/callback";
+  dest = "https://spotify-rankings.herokuapp.com/";
 }
 else{
   redirect_uri = ip+':3001/callback';
@@ -127,11 +129,12 @@ app.get('/callback', function(req, res) {
   let storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect(ip+':3000/#' +
+    res.redirect(dest +
       querystring.stringify({
         error: 'state_mismatch'
       }));
-  } else {
+  } 
+  else {
     res.clearCookie(stateKey);
     let authOptions = {
       url: 'https://accounts.spotify.com/api/token',
@@ -164,13 +167,13 @@ app.get('/callback', function(req, res) {
         });
 
         // Here I pass the token to the URLwe can also pass the token to the browser to make requests from there
-        res.redirect(ip+':3000/#' +
+        res.redirect(dest +
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect(ip+':3000/#' +
+        res.redirect(dest +
           querystring.stringify({
             error: 'invalid_token'
           }));
