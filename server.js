@@ -94,7 +94,7 @@ app.get('/login', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: process.env.REDIRECT_URI,
+      redirect_uri: "https://spotify-rankings.herokuapp.com/callback",
       state: state
     }));
 });
@@ -111,7 +111,7 @@ app.get('/logout', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: process.env.REDIRECT_URI,
+      redirect_uri: "https://spotify-rankings.herokuapp.com/callback",
       state: state,
       show_dialog:true
     }));
@@ -138,7 +138,7 @@ app.get('/callback', function(req, res) {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
-        redirect_uri: process.env.REDIRECT_URI,
+        redirect_uri: "https://spotify-rankings.herokuapp.com/callback",
         grant_type: 'authorization_code'
       },
       headers: {

@@ -174,11 +174,11 @@ function App() {
 
 
   const handleLogin = () => {
-    window.location.href = serverip+'/login';
+    window.location.href = "https://spotify-rankings.herokuapp.com"+'/login';
   }
   
   const handleLogout = () => {
-    window.location.href = serverip+'/logout';
+    window.location.href = "https://spotify-rankings.herokuapp.com"+'/logout';
   }
 
   let loginLink = (
