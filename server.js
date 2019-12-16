@@ -29,7 +29,7 @@ app.use(cors());
 const router = express.Router();
 let isProd = process.env.isPROD ? true : false;
 //var ip="http://10.0.0.131"; //Carrah's house
-var ip="http://192.168.1.188"; //Ryan's house
+//var ip="http://192.168.1.188"; //Ryan's house
 // connects our back end code with the database;
 
 let dbString = process.env.MONGO_PROD_URL|| process.env.MONGO_URL_DEV;
@@ -99,7 +99,7 @@ app.get('/login', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: redirect_uri,
+      redirect_uri: process.env.APP_URL,
       state: state
     }));
 });
@@ -116,7 +116,7 @@ app.get('/logout', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: redirect_uri,
+      redirect_uri: process.env.APP_URL,
       state: state,
       show_dialog:true
     }));
