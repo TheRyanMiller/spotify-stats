@@ -114,8 +114,8 @@ function App() {
   //let clientip = "http://192.168.1.188:3000";
   let isProd = process.env.isPROD ? true : false;
   if(isProd) {
-    clientip = "https://spotify-rankings.herokuapp.com";
-    serverip = "https://spotify-rankings.herokuapp.com";
+    //clientip = "https://spotify-rankings.herokuapp.com";
+    //serverip = "https://spotify-rankings.herokuapp.com";
   }
   
 
