@@ -44,14 +44,9 @@ let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let redirect_uri = "";
 let dest = "";
 
-if(isProd) {
   redirect_uri = "https://spotify-rankings.herokuapp.com/callback";
   dest = "https://spotify-rankings.herokuapp.com/";
-}
-else{
-  redirect_uri = ip+':3001/callback';
-  dest = ip+":3000/#";
-}
+
 
 console.log("REDIRECT URI=================================================: ",redirect_uri);
 console.log(redirect_uri, isProd, process.env.isPROD)
@@ -99,7 +94,7 @@ app.get('/login', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: process.env.APP_URL,
+      redirect_uri: process.env.REDIRECT_URI,
       state: state
     }));
 });
@@ -116,7 +111,7 @@ app.get('/logout', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: process.env.APP_URL,
+      redirect_uri: process.env.REDIRECT_URI,
       state: state,
       show_dialog:true
     }));
@@ -143,7 +138,7 @@ app.get('/callback', function(req, res) {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
-        redirect_uri: redirect_uri,
+        redirect_uri: process.env.REDIRECT_URI,
         grant_type: 'authorization_code'
       },
       headers: {
