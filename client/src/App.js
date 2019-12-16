@@ -298,7 +298,7 @@ function App() {
       startColor="#104423"
       endColor="#3aff82"
       needleColor="#ffffff"
-      valueTextFontSize={0}
+      valueTextFontSize="0"
       needleTranition="easeBounceIn"
       />
       <div className="fontColor paragraph large whacky">

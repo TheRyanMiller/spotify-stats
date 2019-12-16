@@ -31,7 +31,7 @@ const tile = (props) =>{
                 {/* Popularity */}
                 <div className="meterCol">
                     <meter className="popMeter" min="0" max="100" value={props.track.popularity}> </meter>
-                    <span className="large" style={{fontSize: "10px"}}> {props.track.popularity}</span>
+                    <span className="large" style={{fontSize: "12px"}}> {props.track.popularity}</span>
                 </div>
 
             </div>

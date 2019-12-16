@@ -28,10 +28,9 @@ const app = express();
 app.use(cors());
 const router = express.Router();
 let isProd = process.env.isPROD ? true : false;
-//var ip="http://10.0.0.131";
-var ip="http://192.168.1.188";
+//var ip="http://10.0.0.131"; //Carrah's house
+var ip="http://192.168.1.188"; //Ryan's house
 // connects our back end code with the database;
-console.log("Mongo DEV URL: ",process.env.MONGO_URL_DEV);
 
 let dbString = process.env.MONGO_PROD_URL|| process.env.MONGO_URL_DEV;
 mongoose.connect(dbString, { useNewUrlParser: true });
@@ -50,6 +49,9 @@ if(isProd) {
 else{
   redirect_uri = ip+':3001/callback';
 }
+
+console.log("REDIRECT URI=================================================: ",redirect_uri);
+console.log("REDIRECT URI: ",redirect_uri);
 
 
 // USE middleware are executed every time a request is receieved
