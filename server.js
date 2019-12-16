@@ -27,7 +27,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 const router = express.Router();
-
+let isProd = process.env.isPROD ? true : false;
 //var ip="http://10.0.0.131";
 var ip="http://192.168.1.188";
 // connects our back end code with the database;
@@ -40,9 +40,12 @@ db.once('open', () => console.log('connected to the database... '+ dbString));
 // checks if connection with the database is successful
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
-var client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
-var client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
-var redirect_uri = ip+':3001/callback'; // Your redirect uri
+let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
+let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
+let redirect_uri = "";
+
+if(isProd) redirct_uri = "https://spotify-rankings.herokuapp.com/callback";
+else{redirect_uri = ip+':3001/callback';}
 
 // USE middleware are executed every time a request is receieved
 // (optional) only made for logging and
@@ -55,30 +58,30 @@ app.use(bodyParser.json());
  * @param  {number} length The length of the string
  * @return {string} The generated string
  */
-var generateRandomString = function(length) {
-  var text = '';
-  var possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+let generateRandomString = function(length) {
+  let text = '';
+  let possible = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
 
-  for (var i = 0; i < length; i++) {
+  for (let i = 0; i < length; i++) {
     text += possible.charAt(Math.floor(Math.random() * possible.length));
   }
   return text;
 };
 
-var stateKey = 'spotify_auth_state';
+let stateKey = 'spotify_auth_state';
 
-
+app.use(express.static(path.join(__dirname, "client", "build")))
 app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
 
 app.get('/login', function(req, res) {
 
-  var state = generateRandomString(16);
+  let state = generateRandomString(16);
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-read-email user-read-playback-state user-top-read';
+  let scope = 'user-read-private user-read-email user-top-read';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -91,11 +94,11 @@ app.get('/login', function(req, res) {
 
 app.get('/logout', function(req, res) {
 
-  var state = generateRandomString(16);
+  let state = generateRandomString(16);
   res.cookie(stateKey, state);
 
   // your application requests authorization
-  var scope = 'user-read-private user-read-email user-read-playback-state user-top-read';
+  let scope = 'user-read-private user-read-email user-read-playback-state user-top-read';
   res.redirect('https://accounts.spotify.com/authorize?' +
     querystring.stringify({
       response_type: 'code',
@@ -112,9 +115,9 @@ app.get('/callback', function(req, res) {
   // your application requests refresh and access tokens
   // after checking the state parameter
 
-  var code = req.query.code || null;
-  var state = req.query.state || null;
-  var storedState = req.cookies ? req.cookies[stateKey] : null;
+  let code = req.query.code || null;
+  let state = req.query.state || null;
+  let storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
     res.redirect(ip+':3000/#' +
@@ -123,7 +126,7 @@ app.get('/callback', function(req, res) {
       }));
   } else {
     res.clearCookie(stateKey);
-    var authOptions = {
+    let authOptions = {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,

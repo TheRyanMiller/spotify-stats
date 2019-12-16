@@ -121,9 +121,14 @@ function App() {
     }
   },[isLoggedIn]);
 
-  //const ip = "http://10.0.0.131";
-  const ip = "http://192.168.1.188"
-
+  //let ip = "http://10.0.0.131";
+  let serverip = "http://192.168.1.188:3001"
+  let clientip = "http://192.168.1.188:3000";
+  let isProd = process.env.isPROD ? true : false;
+  if(isProd) {
+    clientip = "https://spotify-rankings.herokuapp.com";
+    serverip = "https://spotify-rankings.herokuapp.com";
+  }
   
 
   const sortUser = (data) => {
@@ -181,7 +186,7 @@ function App() {
 
 
   const handleLogout = () => {
-    window.location.href = ip+':3001/logout';
+    window.location.href = ip+'/logout';
   }
   
   let loginLink = (
