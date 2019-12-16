@@ -88,7 +88,8 @@ app.get('/login', function(req, res) {
 
   let state = generateRandomString(16);
   res.cookie(stateKey, state);
-
+  console.log("=====================CHECKING IN FRONT OF CALL");
+  console.log(redirect_uri, isProd, process.env.isPROD)
   // your application requests authorization
   let scope = 'user-read-private user-read-email user-top-read';
   res.redirect('https://accounts.spotify.com/authorize?' +
