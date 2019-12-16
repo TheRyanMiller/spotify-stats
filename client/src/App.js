@@ -110,8 +110,8 @@ function App() {
   },[selectedDuration]);
 
   //let ip = "http://10.0.0.131";
-  let serverip = "http://192.168.1.188:3001"
-  let clientip = "http://192.168.1.188:3000";
+  //let serverip = "http://192.168.1.188:3001"
+  //let clientip = "http://192.168.1.188:3000";
   let isProd = process.env.isPROD ? true : false;
   if(isProd) {
     clientip = "https://spotify-rankings.herokuapp.com";
