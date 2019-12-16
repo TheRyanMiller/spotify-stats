@@ -1,0 +1,21 @@
+$primary: #1DB954;
+$primary-color: #673AB7;
+$brand-primary: $primary-color;
+$primary-color: #673AB7;
+$primary-light-color: #9A67EA;
+$primary-dark-color: #320B86;
+$primary-text-color: #FFFFFF;
+$background-color: #FAFAFA;
+$cards-dialogs-color: #FFFFFF;
+$error-color: #D50000;
+
+$theme-colors: (
+  "primary": #1ED761,
+  "secondary": #202020,
+  "highlight": #525252,
+  "danger": #fd8983
+);
+$body-bg: #000;
+
+@import url('https://fonts.googleapis.com/css?family=Delius|Inder|Montserrat&display=swap');
+@import '~bootstrap/scss/bootstrap.scss';

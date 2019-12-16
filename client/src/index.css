@@ -12,3 +12,8 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+@font-face {
+  font-family: 'Patrick Hand', cursive;
+  src: local('PatrickHand-Regular'), url(./fonts/Patrick_Hand/PatrickHand-Regular.ttf) format('tff'); 
+}

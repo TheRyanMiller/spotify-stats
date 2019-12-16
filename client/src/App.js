@@ -6,6 +6,9 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ArtistTile from './components/artistTile';
 import TrackTile from './components/trackTile';
+import Auxx from './components/hoc/auxx';
+import './styles/custom.scss';
+import ReactSpeedometer from "react-d3-speedometer"
 
 
 function App() {
@@ -27,9 +30,33 @@ function App() {
 
   const [selectedArtists, setSelectedArtists] = useState(true);
   const [selectedDuration, setSelectedDuration] = useState("short_term");
+  const [selectedHipsterOMeter, setSelectedHipsterOMeter] = useState(false);
+  
+  const [textFilter, setTextFilter] = useState("Now viewing top short term (past ~4 weeks) artists.");
+  const [hipsterScore, setHipsterScore] = useState(0);
 
   //Make API calls all up front on page load
   useEffect(() => {
+    const getHashParams = () => {
+      var hashParams = {};
+      var e, r = /([^&;=]+)=?([^&;]*)/g,
+          q = window.location.hash.substring(1);
+      e = r.exec(q)
+      while (e) {
+         hashParams[e[1]] = decodeURIComponent(e[2]);
+         e = r.exec(q);
+      }
+      return hashParams;
+    }
+  
+    const params = getHashParams();
+    const token = params.access_token;
+    if(token && !isLoggedIn) setIsLoggedIn(true);
+    console.log("login set from tken")
+    const spotifyApi = new SpotifyWebApi();
+    if (token) {
+      spotifyApi.setAccessToken(token);
+    }  
     Promise.all([      
       spotifyApi.getMyTopArtists({time_range:"short_term", limit:50}),
       spotifyApi.getMyTopArtists({time_range:"medium_term", limit:50}),
@@ -86,28 +113,17 @@ function App() {
     }
   },[selectedDuration]);
 
+  useEffect(() => {
+    console.log("YOYOYOY")
+    if(!isLoggedIn) {
+      console.log("YOYOYOY")
+    }
+  },[isLoggedIn]);
+
   //const ip = "http://10.0.0.131";
   const ip = "http://192.168.1.188"
 
-  const getHashParams = () => {
-    var hashParams = {};
-    var e, r = /([^&;=]+)=?([^&;]*)/g,
-        q = window.location.hash.substring(1);
-    e = r.exec(q)
-    while (e) {
-       hashParams[e[1]] = decodeURIComponent(e[2]);
-       e = r.exec(q);
-    }
-    return hashParams;
-  }
-
-  const params = getHashParams();
-  const token = params.access_token;
-  if(token && !isLoggedIn) setIsLoggedIn(true);
-  const spotifyApi = new SpotifyWebApi();
-  if (token) {
-    spotifyApi.setAccessToken(token);
-  }  
+  
 
   const sortUser = (data) => {
     let user = {};
@@ -128,7 +144,7 @@ function App() {
       return {
         "id":item.id,
         "name":item.name, 
-        "popularity":item.popularity,
+        "popularity":100-item.popularity,
         "followers":item.followers.total,
         "imgUrl":item.images[2] ? item.images[2].url : ""
       }
@@ -150,7 +166,7 @@ function App() {
         "name":item.name,
         "artist": artist, 
         "album":item.album.name,
-        "popularity":item.popularity,
+        "popularity":100-item.popularity,
         "albumImgUrl":item.album.images[2] ? item.album.images[2].url : ""
       }
     })
@@ -158,41 +174,23 @@ function App() {
     if(term === "medium_term") setTopTracksMedium(tracks);
     if(term === "long_term") setTopTracksLong(tracks);
   }
+
+  const handleLogout = () => {
+    window.location.href = ip+':3001/logout';
+  }
+  
   let loginLink = (
     <div>
-      <a href={ip+':3001/login'}> Login to Spotify </a>
+      <Button className="btn-sm" onClick={handleLogout}> Login to Spotify </Button>
     </div>
   )
 
-  // const buildArtistList = (artists) => {
-  //   let rows = artists.map((artist,idx) => {
-  //     return (
-  //         <tr key={artist.id}>
-  //           <td className="rankColumn">{idx+1+"."}</td>
-  //           <td className="imgColumn"><img width="40px" height="40px" src={artist.imgUrl} /></td>
-  //           <td>{artist.name}</td>
-  //           <td className="meter" width="10%" style={{"backgroundSize": artist.popularity+"% 100%"}}>{artist.popularity+"/100"}</td>
-  //         </tr>
-  //     )
-  //   })
-  //   return(
-  //     <div>
-  //       <table>
-  //         <thead>
-  //         <tr>
-  //           <th></th>
-  //           <th></th>
-  //           <th>Artist</th>
-  //           <th>Popularity</th>
-  //         </tr>
-  //         </thead>
-  //           <tbody>
-  //           {rows}
-  //           </tbody>
-  //       </table>
-  //     </div>
-  //   )
-  // }
+  let logOutLink = (
+    <div className="logoutright fontColor">
+      
+    </div>
+  )
+  
 
   const buildArtistList = (artists) => {
     let rows = artists.map((artist,idx) => {
@@ -202,7 +200,18 @@ function App() {
       )
     })
     return(
-      <div className="center">{rows}</div>
+      <div className="center">
+        <div className="master center">
+        <div className={"hrow"}>
+            <div className="hcol0"><b>Rank</b></div>
+            <div className={"col1 center"}></div>
+            <div className="hcol2"><b>Artist</b></div>
+            <div className="meterCol">Hipster cred</div>
+        </div>
+
+        </div>
+        {rows}
+      </div>
     )
   }
 
@@ -210,95 +219,143 @@ function App() {
     let rows = tracks.map((track,idx) => {
       return (
         <TrackTile track={track} idx={idx} click={handleClick} />
-
       )
     })
     return(
-      <div className="center">{rows}</div>
+      <div className="center">
+        <div className="master center">
+        <div className={"fontColor hrow"}>
+            <div className="hcol0">Rank</div>
+            <div className={"col1 center"}></div>
+            <div className="hcol2">Track</div>
+            <div className="meterCol">Hipster cred</div>
+        </div>
+
+        </div>
+        {rows}
+      </div>
     )
   }
 
   const handleClick = (event) => {
     console.log(event)
   }
-
-  // const buildTrackList = (tracks) => {
-  //   let rows = tracks.map((track,idx) => {
-  //     return (
-  //       <tr className="someSpace" key={track.id} style={{fontSize: "14px"}}>
-  //         <td className="rankColumn">{idx+1+"."}</td>
-  //         <td className="imgColumn"><img width="40px" height="40px" src={track.albumImgUrl} /></td>
-  //         <td title={track.name}>{track.name.length>25 ? track.name.substring(0,25)+"..." : track.name}</td>
-  //         <td className="nomarginnopad" title={track.artist}>
-  //           {track.artist.length>25 ? track.artist.substring(0,25)+"..." : track.artist} 
-  //           <span className="nomarginnopad" style={{fontSize: "10px"}}> (<i>{track.album.length>20 ? track.album.substring(0,20)+"..." : track.album}</i>)</span></td>
-  //         <td className="meter" width="10%" style={{"backgroundSize": track.popularity+"% 100%"}}>{track.popularity+"/100"}</td>
-  //       </tr>
-  //     )
-  //   })
-  //   return(
-  //     <div>
-  //       <table>
-  //         <thead>
-  //         <tr style={{fontSize: "14px"}}>
-  //           <th></th>
-  //           <th></th>
-  //           <th>Track</th>
-  //           <th>Artist (Album)</th>
-  //           <th>Popularity</th>
-  //         </tr>
-  //         </thead>
-  //         <tbody>
-  //           {rows}
-  //         </tbody>
-  //       </table>
-  //     </div>
-  //   )
-  // }
-
   
     let handleDurationClick = (event) => {
       setSelectedDuration(event.target.value);
+      if(selectedArtists){
+        if(event.target.value==="short_term") setTextFilter("Now viewing top short term (past ~4 weeks) artists.");
+        if(event.target.value==="medium_term") setTextFilter("Now viewing top medium term (past ~6 months) artists.");
+        if(event.target.value==="long_term") setTextFilter("Now viewing top long term (several years) artists.");
+        
+      }
+      else{
+        if(event.target.value==="short_term") setTextFilter("Now viewing top short term (past ~4 weeks) songs.");
+        if(event.target.value==="medium_term") setTextFilter("Now viewing top medium term (past ~6 months) songs.");
+        if(event.target.value==="long_term") setTextFilter("Now viewing top long term (several years) songs.");
+      }
     }
 
   let handleTypeClick = (event) => {
+    console.log("selected type : ",event.target.value)
     if(event.target.value==="artists"){
       setSelectedArtists(true);
       setSelectedTracks(false);
-      if(selectedDuration==="short_term") setTopArtists(topArtistsShort);
-      if(selectedDuration==="medium_term") setTopArtists(topArtistsMedium);
-      if(selectedDuration==="long_term") setTopArtists(topArtistsLong);
+      setSelectedHipsterOMeter(false);
+      console.log("duration: ",selectedDuration)
+      if(selectedDuration==="short_term") {setTopArtists(topArtistsShort); setTextFilter("Now viewing top short term (past ~4 weeks) artists.")};
+      if(selectedDuration==="medium_term") {setTopArtists(topArtistsMedium); setTextFilter("Now viewing top medium term (past ~6 months) artists.")};
+      if(selectedDuration==="long_term") {setTopArtists(topArtistsLong); setTextFilter("Now viewing top long term (several years) artists.")};
+      
     }
-    else{
+    if(event.target.value==="tracks"){
       setSelectedArtists(false);
       setSelectedTracks(true);
-      if(selectedDuration==="short_term") setTopTracks(topTracksShort);
-      if(selectedDuration==="medium_term") setTopTracks(topTracksMedium);
-      if(selectedDuration==="long_term") setTopTracks(topTracksLong);
+      setSelectedHipsterOMeter(false);
+      console.log("duration: ",selectedDuration)
+      if(selectedDuration==="short_term") {setTopTracks(topTracksShort); setTextFilter("Now viewing top short term (past ~4 weeks) songs.")};
+      if(selectedDuration==="medium_term") {setTopTracks(topTracksMedium); setTextFilter("Now viewing top medium term (past ~6 months) songs.")};
+      if(selectedDuration==="long_term") {setTopTracks(topTracksLong); setTextFilter("Now viewing top long term (several years) songs.")};
     }
-    
+    if(event.target.value==="hipsterometer"){
+      setSelectedArtists(false);
+      setSelectedTracks(false);
+      setSelectedHipsterOMeter(true);
+      setTextFilter("");
+    }
+
+    console.log("==========")
   }
 
+  let durationButtons = (<div>
+    <ButtonGroup className="someSpace btn-xsm" aria-label="Term">
+              <Button size="sm" value="short_term" onClick={handleDurationClick} variant={ selectedDuration==="short_term" ? "primary" : "secondary" }>4 weeks</Button>
+              <Button size="sm" value="medium_term" onClick={handleDurationClick} variant={ selectedDuration==="medium_term" ? "primary" : "secondary" }>6 months</Button>
+              <Button size="sm" value="long_term" onClick={handleDurationClick} variant={ selectedDuration==="long_term" ? "primary" : "secondary" }>All-time</Button>
+            </ButtonGroup>
+      </div>)
+
+  let hipsterOMeter = (<div className="center">
+    <ReactSpeedometer 
+      value="88" 
+      minValue="0" 
+      maxValue="100"
+      needleTransitionDuration="4000" 
+      startColor="#104423"
+      endColor="#3aff82"
+      needleColor="#ffffff"
+      valueTextFontSize="0"
+      needleTranition="easeBounceIn"
+      />
+      <div className="fontColor paragraph">
+  Your Hipster score is calculated using Spotify's "popularity" metric for all the artists and tracks on your list. <br />
+  <p className="center">Your Hipster Score is {hipsterScore}</p><br />
+  Use this link to share your score on Facebook.
+      </div>
+      </div>)
+
+  let nav = (<div>
+    <h1 className="siteHeader">Hipster Cred Calculator</h1>
+    <a className="btn-xs specialbtn fontColor" onClick={handleLogout} href="/#"> About </a> | 
+    <a className="btn-xs specialbtn fontColor" onClick={handleLogout} href="/#"> Switch User </a>
+    <br /><br /><br />
+  </div>)
+
+
+  let body = (<>
+      <div className="center fontColor  ">
+        {nav}
+        <div className="toggleControls center">
+          
+          <ButtonGroup className="someSpace" aria-label="Basic example">
+            <Button value="artists" onClick={handleTypeClick} className="sideSpace" variant={ selectedArtists ? "primary" : "secondary" }>Artists</Button>
+            <Button value="tracks" onClick={handleTypeClick} className="sideSpace" variant={ selectedTracks ? "primary" : "secondary" }>Songs</Button>
+            <Button value="hipsterometer" onClick={handleTypeClick} className="btn-outline-danger sideSpace" variant={ selectedHipsterOMeter ? "primary" : "secondary" }>Hipster-o-Meter</Button>
+          </ButtonGroup>
+          {!selectedHipsterOMeter ? durationButtons : ""}
+          </div>
+          <span className="textFilter">{textFilter}</span>
+          </div>
+      <br />
+      <br />
+      {selectedHipsterOMeter ? hipsterOMeter : ""}
+      {selectedArtists ? buildArtistList(topArtists) : ""}
+      {selectedTracks ? buildTrackList(topTracks) : ""}
+      
+    
+    </>
+  )
+
+  let homepage = <div className="fontColor center">
+    <h1>Spotify Stats</h1>
+    <p>Login to see a listing of your top played artists and songs.... oh and also to see your hipster score.</p>
+    {loginLink}
+  </div>
 
   return (
     <div className='App'>
-      {isLoggedIn ? "" : loginLink}
-      <br />
-      <div className="toggleControls">
-        <ButtonGroup className="someSpace" aria-label="Basic example">
-          <Button value="artists" onClick={handleTypeClick} variant={ selectedArtists ? "primary" : "secondary" }>Artists</Button>
-          <Button value="tracks" onClick={handleTypeClick} variant={ selectedTracks ? "primary" : "secondary" }>Songs</Button>
-        </ButtonGroup>
-        <br />
-        <ButtonGroup className="someSpace" aria-label="Basic example">
-          <Button size="sm" value="short_term" onClick={handleDurationClick} variant={ selectedDuration==="short_term" ? "primary" : "secondary" }>Short</Button>
-          <Button size="sm" value="medium_term" onClick={handleDurationClick} variant={ selectedDuration==="medium_term" ? "primary" : "secondary" }>Medium</Button>
-          <Button size="sm" value="long_term" onClick={handleDurationClick} variant={ selectedDuration==="long_term" ? "primary" : "secondary" }>Long</Button>
-        </ButtonGroup>
-      </div>
-
-      {selectedArtists ? buildArtistList(topArtists) : ""}
-      {selectedTracks ? buildTrackList(topTracks) : ""}
+      {isLoggedIn ? logOutLink : ""}
+      {isLoggedIn ? body : homepage}
 
     </div>
   );

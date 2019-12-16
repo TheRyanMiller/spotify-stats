@@ -23,15 +23,15 @@ const tile = (props) =>{
 
                 {/* Track + Artistt */}
                 <div className="col2">
-                    <span className="titleline"><b>{props.track.name}</b></span><br />
+                    <span className="titleline">{props.track.name}</span><br />
                     <span className="titleline" style={{fontSize: "12px"}}>{props.track.artist}</span>
                 </div>
                 
                 
                 {/* Popularity */}
-                <div className="meter">
-                    <meter min="0" max="100" low="30" high="80" optimum="100" value={props.track.popularity}> </meter>
-                    <span className="large" style={{fontSize: "12px"}}> {props.track.popularity}</span>
+                <div className="meterCol">
+                    <meter className="popMeter" min="0" max="100" value={props.track.popularity}> </meter>
+                    <span className="large" style={{fontSize: "10px"}}> {props.track.popularity}</span>
                 </div>
 
             </div>

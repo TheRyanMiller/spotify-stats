@@ -89,6 +89,24 @@ app.get('/login', function(req, res) {
     }));
 });
 
+app.get('/logout', function(req, res) {
+
+  var state = generateRandomString(16);
+  res.cookie(stateKey, state);
+
+  // your application requests authorization
+  var scope = 'user-read-private user-read-email user-read-playback-state user-top-read';
+  res.redirect('https://accounts.spotify.com/authorize?' +
+    querystring.stringify({
+      response_type: 'code',
+      client_id: client_id,
+      scope: scope,
+      redirect_uri: redirect_uri,
+      state: state,
+      show_dialog:true
+    }));
+});
+
 app.get('/callback', function(req, res) {
 
   // your application requests refresh and access tokens
@@ -99,7 +117,7 @@ app.get('/callback', function(req, res) {
   var storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect('/#' +
+    res.redirect(ip+':3000/#' +
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -142,7 +160,7 @@ app.get('/callback', function(req, res) {
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect('/#' +
+        res.redirect(ip+':3000/#' +
           querystring.stringify({
             error: 'invalid_token'
           }));

@@ -1,5 +1,10 @@
 .App {
   text-align: left;
+  font-family: 'Patrick Hand', cursive;
+}
+
+.siteHeader{
+  
 }
 
 .content-table .content-row:hover {
@@ -19,9 +24,45 @@ table tr:nth-child(even) td{
   
 }
 
+.filterButtonLabels{
+  color: white;
+  font-size: 20px;
+}
+
 .toggleControls{
-  margin: 5px auto;
-  text-align: center;
+  text-align: left;
+}
+
+.paragraph{
+  width: 90%;
+  max-width: 700px;
+  text-align: left;
+}
+
+.textFilter{
+  font-size: .85rem;
+  color: rgb(133, 133, 133);
+}
+
+.specialbtn{
+  background-color: black;
+  padding: .25rem .5rem;
+  font-size: .75rem;
+  line-height: 1;
+  border-radius: .1rem;
+  background-color: black;
+}
+
+.smButtonGroup{
+  padding: .25rem .5rem;
+  font-size: .5rem;
+  line-height: 1;
+  border-radius: .1rem;
+}
+
+.logoutright{
+  float: right;
+  margin-right: 5px;
 }
 
 .someSpace{
@@ -33,19 +74,6 @@ table tr:nth-child(even) td{
   margin: 0px;
   padding: 0px;
   line-height: 100%;
-}
-
-table{
-  margin: 5px auto;
-  width: 95%;
-  max-width: 750px;
-}
-
-.imgColumn{
-  width: 60px;
-}
-.rankColumn{
-  width: 20px;
 }
 
 .App-logo {
@@ -74,6 +102,20 @@ table{
   color: #61dafb;
 }
 
+button.btn-xsm{
+  font-size: 0.7rem;
+}
+
+.centerNoFlex{
+  text-align: center;
+  vertical-align: middle;
+  margin: auto 0px;
+  align-items: center;
+  
+}
+.sideSpace{
+  margin-right: 5px;
+}
 @keyframes App-logo-spin {
   from {
     transform: rotate(0deg);
