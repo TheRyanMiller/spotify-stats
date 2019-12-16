@@ -79,7 +79,7 @@ function App() {
 
   useEffect(() =>{
     if(Object.keys(currentUser).length>0){
-      let allTracks = [{term:"short_term",tracks:topTracksShort},{term:"medium_term",tracks:topTracksMedium},{term:"long_term",tracks:topTracksLong}];
+      let allTracks = [{term:"short_term",tracks:topTracksShort},{term:"medium_term",tracks:topTracksMedium},{term:"long_term",tracks:topTracksLong},{term:"short_term",artists:topArtistsShort},{term:"medium_term",artists:topArtistsMedium},{term:"long_term",artists:topArtistsLong}];
       //Run Hipster-ometer logic
       let instance = axios.create({
         baseURL: process.env.REACT_APP_API_PROD || process.env.REACT_APP_API,

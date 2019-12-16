@@ -45,7 +45,7 @@ let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let redirect_uri = "";
 
 if(isProd) {
-  redirct_uri = "https://spotify-rankings.herokuapp.com/callback";
+  redirect_uri = "https://spotify-rankings.herokuapp.com/callback";
 }
 else{
   redirect_uri = ip+':3001/callback';
