@@ -9,6 +9,8 @@ import TrackTile from './components/trackTile';
 import Auxx from './components/hoc/auxx';
 import './styles/custom.scss';
 import ReactSpeedometer from "react-d3-speedometer"
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 
 
 function App() {
@@ -307,7 +309,8 @@ function App() {
 
   let loginLink = (
     <div>
-      <Button className="btn-sm" onClick={handleLogin}> Login to Spotify </Button>
+      <Button className="large" onClick={handleLogin}> 
+                <FontAwesomeIcon className="" icon={faSpotify} />  Login to Spotify</Button>
     </div>
   )
 
@@ -451,7 +454,7 @@ function App() {
       needleTranition="easeBounceIn"
       />
       <div className="fontColor paragraph">
-      <p className="center whacky">Your Hipster Score is <span className="xlarge"><b>{hipsterScore}</b></span></p><br />
+      <p className="center whacky large">Your Hipster Score is <span className="xlarge"><b>{hipsterScore}</b></span></p><br />
 
       
         Your Hipster score is calculated based on Spotify's "popularity" metric for 
@@ -506,8 +509,9 @@ function App() {
   )
 
   let homepage = <div className="fontColor center">
-    <h1>Spotify Stats</h1>
-    <p className="paragraph">Login to see a listing of your top played artists and songs.</p>
+    <h1>{title}</h1>
+    <p className="paragraph center">Login to view your top artist and song rankings on Spotify.</p>
+    <br />
     {loginLink}
   </div>
 

@@ -28,7 +28,8 @@ const app = express();
 app.use(cors());
 const router = express.Router();
 //var ip="http://10.0.0.131"; //Carrah's house
-var ip="http://192.168.1.188"; //Ryan's house
+let ip="http://192.168.1.188"; //Ryan's house
+let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback"
 
 // connects our back end code with the database;
 
@@ -84,7 +85,7 @@ app.get('/login', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: process.env.REACT_APP_ISPROD === "true"  ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+      redirect_uri: redirect_uri,
       state: state
     }));
 });
@@ -101,7 +102,7 @@ app.get('/logout', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: process.env.REACT_APP_ISPROD === "true"  ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+      redirect_uri: redirect_uri,
       state: state,
       show_dialog:true
     }));
@@ -128,7 +129,7 @@ app.get('/callback', function(req, res) {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
-        redirect_uri: process.env.REACT_APP_ISPROD === "true" ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+        redirect_uri: redirect_uri,
         grant_type: 'authorization_code'
       },
       headers: {
@@ -207,7 +208,7 @@ router.post('/api/postTracks', (req, res) => {
   });
   let visitLog = new VisitLog(user);
   visitLog.save(()=>{
-    console.log("Log Saved");
+    console.log("Visitor log written");
   });
   
   let uid = user.id;
@@ -216,23 +217,19 @@ router.post('/api/postTracks', (req, res) => {
     createdAt: {$gte: new Date((new Date().getTime() - (14 * 24 * 60 * 60 * 1000)))}
   };
 
-  let writeEnabled = true;
-  console.log("Checking count...")
   TrackList.countDocuments(
     query,(err, count)=>{
       console.log("Count = ",count)
-      if(count>0){
-        writeEnable = false;
-        console.log("Write Disabled")
-      }
-      if(writeEnabled){
+      if(count===0){
         trackList.markModified('list');
         trackList.markModified('list.tracks'); 
         trackList.save((err) => {
           if (err) return res.json({ success: false, error: err });
+          console.log("Tracklog written.");
           return res.json({ success: true });
         });
       }
+      else{console.log("Tracklog write bypassed.");}
   })
 
   //Check db if recent records exist before saving everything
