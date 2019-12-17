@@ -24,7 +24,7 @@ const tile = (props) =>{
                 {/* Track + Artistt */}
                 <div className="col2">
                     <span className="titleline">{props.track.name}</span><br />
-                    <span className="titleline" style={{fontSize: "12px"}}>{props.track.artist}</span>
+                    <span className="titleline" style={{fontSize: "12px", fontWeight: 80}}>{props.track.artist}</span>
                 </div>
                 
                 

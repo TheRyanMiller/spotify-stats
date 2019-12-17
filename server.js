@@ -27,7 +27,7 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 const router = express.Router();
-let isProd = process.env.isPROD ? true : false;
+let isProd = process.env.REACT_APP_ISPROD ? true : false;
 //var ip="http://10.0.0.131"; //Carrah's house
 var ip="http://192.168.1.188"; //Ryan's house
 
@@ -44,10 +44,10 @@ let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let dest = "https://spotify-rankings.herokuapp.com/#";
 
-if(!(process.env.isPROD || process.env.isPROD === "true")) dest = ip+"#/3000";
+if(!(process.env.REACT_APP_ISPROD || process.env.REACT_APP_ISPROD === "true")) dest = ip+"#/3000";
 
 console.log("=========THE TRUTH========",dest)
-console.log("=========THE TRUTH2========",(process.env.isPROD || process.env.isPROD === "true"))
+console.log("=========THE TRUTH2========",(process.env.REACT_APP_ISPROD || process.env.REACT_APP_ISPROD === "true"))
 
 
 // USE middleware are executed every time a request is receieved
@@ -91,7 +91,7 @@ app.get('/login', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+      redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.REACT_APP_ISPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
       state: state
     }));
 });
@@ -108,7 +108,7 @@ app.get('/logout', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+      redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.REACT_APP_ISPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
       state: state,
       show_dialog:true
     }));
@@ -135,7 +135,7 @@ app.get('/callback', function(req, res) {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
-        redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+        redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.REACT_APP_ISPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
         grant_type: 'authorization_code'
       },
       headers: {

@@ -231,7 +231,7 @@ function App() {
   let ip = "http://192.168.1.188";
   //let serverip = "http://192.168.1.188:3001"
   
-  if(process.env.isPROD === "true") {
+  if(process.env.REACT_APP_ISPROD === "true") {
     ip = "https://spotify-rankings.herokuapp.com";
   }
   
@@ -291,13 +291,12 @@ function App() {
 
 
   const handleLogin = () => {
-    console.log("isProd: ",process.env.isPROD)
-    if(process.env.isPROD === "true") {
+    console.log("isProd: ",process.env.REACT_APP_ISPROD)
+    if(process.env.REACT_APP_ISPROD === "true") {
       window.location.href = ip+'/login';
       console.log("Evaluated true. IP is: ",ip+'/login')
-
     }
-    if(!process.env.isPROD === "true"){
+    if(!process.env.REACT_APP_ISPROD === "true"){
       window.location.href = ip+':3001/login';
       console.log("Evaluated false. IP is: ",ip+':3001/login')
     }
@@ -305,8 +304,8 @@ function App() {
   }
   
   const handleLogout = () => {
-    if(process.env.isPROD === "true") window.location.href = ip+'/logout';
-    if(!process.env.isPROD === "true") window.location.href = ip+':3001/logout';
+    if(process.env.REACT_APP_ISPROD === "true") window.location.href = ip+'/logout';
+    if(!process.env.REACT_APP_ISPROD === "true") window.location.href = ip+':3001/logout';
   }
 
   let loginLink = (
