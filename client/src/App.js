@@ -236,7 +236,7 @@ function App() {
   
   if(process.env.REACT_APP_ISPROD === "true") {
     ip = "https://spotify-rankings.herokuapp.com";
-    ip = "music-rankings.com";
+    ip = "http://music-rankings.com";
   }
   
 

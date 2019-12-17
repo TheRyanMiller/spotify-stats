@@ -44,7 +44,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
-let dest = "http://music-rankings.com/#";
+let dest = "/#";
 
 if(!(process.env.REACT_APP_ISPROD || process.env.REACT_APP_ISPROD === "true")) dest = ip+":3000/#";
 
@@ -120,7 +120,7 @@ app.get('/callback', function(req, res) {
   let storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect(dest + 
+    res.redirect("/#" + 
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -158,13 +158,13 @@ app.get('/callback', function(req, res) {
         });
 
         // Here I pass the token to the URLwe can also pass the token to the browser to make requests from there
-        res.redirect(dest +  
+        res.redirect("/#" +  
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect(dest + 
+        res.redirect("/#" + 
           querystring.stringify({
             error: 'invalid_token'
           }));
