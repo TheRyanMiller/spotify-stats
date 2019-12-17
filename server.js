@@ -29,7 +29,7 @@ app.use(cors());
 const router = express.Router();
 let isProd = process.env.isPROD ? true : false;
 //var ip="http://10.0.0.131"; //Carrah's house
-var ip="http://192.168.1.188/"; //Ryan's house
+var ip="http://192.168.1.188"; //Ryan's house
 
 // connects our back end code with the database;
 
@@ -44,7 +44,7 @@ let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let dest = "https://spotify-rankings.herokuapp.com/#";
 
-if(!process.env.isPROD) dest = ip+"#";
+if(!process.env.isPROD) dest = ip;
 
 console.log("=========THE TRUTH========",process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+"/callback")
 
@@ -82,7 +82,7 @@ app.get('/login', function(req, res) {
   let state = generateRandomString(16);
   res.cookie(stateKey, state);
   console.log("=====================CHECKING IN FRONT OF CALL");
-  console.log(redirect_uri, isProd, process.env.isPROD)
+  console.log(ip+":3001/callback");
   // your application requests authorization
   let scope = 'user-read-private user-read-email user-top-read';
   res.redirect('https://accounts.spotify.com/authorize?' +
@@ -90,7 +90,7 @@ app.get('/login', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+"/callback",
+      redirect_uri: process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
       state: state
     }));
 });
@@ -107,7 +107,7 @@ app.get('/logout', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+"/callback",
+      redirect_uri: process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
       state: state,
       show_dialog:true
     }));
@@ -123,7 +123,7 @@ app.get('/callback', function(req, res) {
   let storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect(dest +
+    res.redirect(dest + ":3000/#" +
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -134,7 +134,7 @@ app.get('/callback', function(req, res) {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
-        redirect_uri: process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+"/callback",
+        redirect_uri: process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
         grant_type: 'authorization_code'
       },
       headers: {
@@ -161,13 +161,13 @@ app.get('/callback', function(req, res) {
         });
 
         // Here I pass the token to the URLwe can also pass the token to the browser to make requests from there
-        res.redirect(dest +
+        res.redirect(dest + ":3000/#" + 
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect(dest +
+        res.redirect(dest + ":3000/#" +
           querystring.stringify({
             error: 'invalid_token'
           }));

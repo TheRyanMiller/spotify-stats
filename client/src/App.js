@@ -31,10 +31,15 @@ function App() {
 
   const [selectedArtists, setSelectedArtists] = useState(true);
   const [selectedDuration, setSelectedDuration] = useState("short_term");
+
+  //Hipster
   const [selectedHipsterOMeter, setSelectedHipsterOMeter] = useState(false);
+  const [hipsterScore, setHipsterScore] = useState(0);
+  const [bestOf, setBestOf] = useState({});
+  const [bestOfSet, setBestOfSet] = useState(false);
   
   const [textFilter, setTextFilter] = useState("Now viewing top short term (past ~4 weeks) artists.");
-  const [hipsterScore, setHipsterScore] = useState(0);
+
 
   //Make API calls all up front on page load
   useEffect(() => {
@@ -69,6 +74,10 @@ function App() {
     ]).then(result => {
       let hScore=0;
       let totalItems=0;
+      let topPopArtist = {popularity:0};
+      let leastPopArtist = {popularity:100};
+      let topPopTrack = {popularity:0};
+      let leastPopTrack = {popularity:100};
       sortTopArtists(result[0],"short_term");
       sortTopArtists(result[1],"medium_term");
       sortTopArtists(result[2],"long_term");
@@ -77,32 +86,112 @@ function App() {
       sortTopTracks(result[5],"long_term");
 
       result[0].items.map(i=>{
+        if(i.popularity>topPopArtist.popularity) {
+          let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
+          topPopArtist.name = i.name;
+          topPopArtist.popularity = i.popularity;
+          topPopArtist.imgUrl = imgUrl;
+        }
+        if(i.popularity<leastPopArtist.popularity) {
+          let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
+          leastPopArtist.name = i.name;
+          leastPopArtist.popularity = i.popularity;
+          leastPopArtist.imgUrl = imgUrl;
+        }
         hScore += 100 - i.popularity;
         totalItems++;
       })
       result[1].items.map(i=>{
+        let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
+        if(i.popularity>topPopArtist.popularity) {
+          topPopArtist.name = i.name;
+          topPopArtist.popularity = i.popularity;
+          topPopArtist.imgUrl = imgUrl;
+        }
+        if(i.popularity<leastPopArtist.popularity) {
+          let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
+          leastPopArtist.name = i.name;
+          leastPopArtist.popularity = i.popularity;
+          leastPopArtist.imgUrl = imgUrl;
+        }
         hScore += 100 - i.popularity;
         totalItems++;
       })
       result[2].items.map(i=>{
+        let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
+        if(i.popularity>topPopArtist.popularity) {
+          topPopArtist.name = i.name;
+          topPopArtist.popularity = i.popularity;
+          topPopArtist.imgUrl = imgUrl;
+        }
+        if(i.popularity<leastPopArtist.popularity) {
+          leastPopArtist.name = i.name;
+          leastPopArtist.popularity = i.popularity;
+          leastPopArtist.imgUrl = imgUrl;
+        }
         hScore += 100 - i.popularity;
         totalItems++;
       })
       result[3].items.map(i=>{
+        let imgUrl = i.album.images ? (i.album.images[1] ? i.album.images[1].url : "") : "";
+        if(i.popularity>topPopTrack.popularity) {
+          topPopTrack.name = i.name;
+          topPopTrack.popularity = i.popularity;
+          topPopTrack.imgUrl = imgUrl;
+        }
+        if(i.popularity<leastPopTrack.popularity) {
+          leastPopTrack.name = i.name;
+          leastPopTrack.popularity = i.popularity;
+          leastPopTrack.imgUrl = imgUrl;
+        }
         hScore += 100 - i.popularity;
         totalItems++;
       })
       result[4].items.map(i=>{
+        let imgUrl = i.album.images ? (i.album.images[1] ? i.album.images[1].url : "") : "";
+        if(i.popularity>topPopTrack.popularity) {
+          topPopTrack.name = i.name;
+          topPopTrack.popularity = i.popularity;
+          topPopTrack.imgUrl = imgUrl;
+        }
+        if(i.popularity<leastPopTrack.popularity) {
+          leastPopTrack.name = i.name;
+          leastPopTrack.popularity = i.popularity;
+          leastPopTrack.imgUrl = imgUrl;
+        }
         hScore += 100 - i.popularity;
         totalItems++;
       })
       result[5].items.map(i=>{
+        if(i.popularity>topPopTrack.popularity) {
+          let imgUrl = i.album.images ? (i.images[1] ? i.album.images[1].url : "") : "";
+          topPopTrack.name = i.name;
+          topPopTrack.popularity = i.popularity;
+          topPopTrack.imgUrl = imgUrl;
+        }
+        if(i.popularity<leastPopTrack.popularity) {
+          let imgUrl = i.album.images ? (i.album.images[1] ? i.album.images[1].url : "") : "";
+          leastPopTrack.name = i.name;
+          leastPopTrack.popularity = i.popularity;
+          leastPopTrack.imgUrl = imgUrl;
+        }
         hScore += 100 - i.popularity;
         totalItems++;
       })
-      setHipsterScore((hScore/totalItems).toFixed(2));
+      console.log("top track",topPopTrack)
+      console.log("least track", leastPopTrack)
+      console.log("top artist",topPopArtist)
+      console.log("least artist",leastPopArtist)
       
+      setHipsterScore((hScore/totalItems).toFixed(2));
+      setBestOf({
+        "topArtist":topPopArtist,
+        "leastArtist":leastPopArtist,
+        "topTrack":topPopTrack,
+        "leastTrack":leastPopTrack
+      })
       sortUser(result[6]);
+      setBestOfSet(true);
     })
   },[])
 
@@ -138,9 +227,10 @@ function App() {
     }
   },[selectedDuration]);
 
-  //let ip = "http://10.0.0.131";
+  //let ip = "http://10.0.0.131"; //Carrah
+  let ip = "http://192.168.1.188";
   //let serverip = "http://192.168.1.188:3001"
-  //let clientip = "http://192.168.1.188:3000";
+  
   let isProd = process.env.isPROD ? true : false;
   if(isProd) {
     //clientip = "https://spotify-rankings.herokuapp.com";
@@ -203,11 +293,14 @@ function App() {
 
 
   const handleLogin = () => {
-    window.location.href = "https://spotify-rankings.herokuapp.com"+'/login';
+    if(isProd) window.location.href = "https://spotify-rankings.herokuapp.com"+'/login';
+    if(!isProd) window.location.href = ip+':3001/login';
+    
   }
   
   const handleLogout = () => {
-    window.location.href = "https://spotify-rankings.herokuapp.com"+'/logout';
+    if(isProd) window.location.href = "https://spotify-rankings.herokuapp.com"+'/logout';
+    if(!isProd) window.location.href = ip+':3001/logout';
   }
 
   let loginLink = (
@@ -320,7 +413,28 @@ function App() {
               <Button size="sm" value="medium_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="medium_term" ? "primary" : "secondary" }>Past 6 months</Button>
               <Button size="sm" value="long_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="long_term" ? "primary" : "secondary" }>All-time</Button>
             </ButtonGroup>
-      </div>)
+      </div>);
+  
+  let bestOfDiv = (
+    <div className="bestOf">
+      <div className="bestOfb">
+        <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.topArtist.imgUrl : ""} /> 
+        <p>Most popular artist in your lists: <b>{bestOfSet ? bestOf.topArtist.name : ""}</b></p>
+      </div>
+      <div className="bestOfb">
+        <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.leastArtist.imgUrl : ""} />
+        <p>Least popular artist in your lists: <b>{bestOfSet ? bestOf.leastArtist.name : ""}</b></p>
+      </div>
+      <div className="bestOfb">
+        <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.topTrack.imgUrl : ""} />
+        <p>Most popular song in your lists: <b>{bestOfSet ? bestOf.topTrack.name : ""}</b></p>
+      </div>
+      <div className="bestOfb">
+        <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.leastTrack.imgUrl : ""} />
+        <p>Least popular song in your lists: <b>{bestOfSet ? bestOf.leastTrack.name : ""}</b></p>
+      </div>
+    </div>
+  )
 
   let hipsterOMeter = (<div className="center">
     <ReactSpeedometer 
@@ -334,17 +448,19 @@ function App() {
       valueTextFontSize="0"
       needleTranition="easeBounceIn"
       />
-      <div className="fontColor paragraph large whacky">
-      <p className="center ">Your Hipster Score is {hipsterScore}</p><br />
+      <div className="fontColor paragraph">
+      <p className="center whacky">Your Hipster Score is <span className="xlarge"><b>{hipsterScore}</b></span></p><br />
+
+      
         Your Hipster score is calculated using a patented, highly confidential, and top secret algorithm based on Spotify's "popularity" metric for 
-        each of the artists and tracks in your rankings. <br />
-        
+        each of the artists and tracks in your rankings. <br /><br />
+        {bestOfDiv}
       </div>
       </div>)
 
   let title = (<div>
-    <h1 className="siteHeader whacky">My Spotify Rankings</h1>
-    <br />
+    <h2 className="siteHeader titleFont">My Spotify Rankings</h2>
+
   </div>)
 
   let nav = (<div className="navbar">
@@ -359,6 +475,8 @@ function App() {
     when you login and approve.</p>
   <Button size="sm" onClick={()=>{setShowAbout(false)}}>Back</Button>
 </div>
+
+    
 
 
   let body = (<>
