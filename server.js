@@ -44,9 +44,10 @@ let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let dest = "https://spotify-rankings.herokuapp.com/#";
 
-if(!process.env.isPROD) dest = ip;
+if(!(process.env.isPROD || process.env.isPROD === "true")) dest = ip+"#/3000";
 
-console.log("=========THE TRUTH========",process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+"/callback")
+console.log("=========THE TRUTH========",dest)
+console.log("=========THE TRUTH2========",(process.env.isPROD || process.env.isPROD === "true"))
 
 
 // USE middleware are executed every time a request is receieved
@@ -123,7 +124,7 @@ app.get('/callback', function(req, res) {
   let storedState = req.cookies ? req.cookies[stateKey] : null;
 
   if (state === null || state !== storedState) {
-    res.redirect(dest + ":3000/#" +
+    res.redirect(dest + 
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -161,13 +162,13 @@ app.get('/callback', function(req, res) {
         });
 
         // Here I pass the token to the URLwe can also pass the token to the browser to make requests from there
-        res.redirect(dest + ":3000/#" + 
+        res.redirect(dest +  
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect(dest + ":3000/#" +
+        res.redirect(dest + 
           querystring.stringify({
             error: 'invalid_token'
           }));
