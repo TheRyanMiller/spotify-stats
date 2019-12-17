@@ -232,7 +232,6 @@ function App() {
 
   //let ip = "http://10.0.0.131"; //Carrah
   let ip = "http://192.168.1.188";
-  //let serverip = "http://192.168.1.188:3001"
   
   if(process.env.REACT_APP_ISPROD === "true") {
     ip = "http://music-rankings.com";
@@ -295,7 +294,7 @@ function App() {
 
   const handleLogin = () => {
     if(process.env.REACT_APP_ISPROD === "true") {
-      window.location.href = ip+'/login';
+      window.location.href = ip+'/login'; //
     }
     if(!process.env.REACT_APP_ISPROD || !process.env.REACT_APP_ISPROD === "true"){
       window.location.href = ip+':3001/login';
