@@ -76,27 +76,27 @@ function App() {
       sortTopTracks(result[4],"medium_term");
       sortTopTracks(result[5],"long_term");
 
-      result[0].map(i=>{
+      result[0].items.map(i=>{
         hScore += 100 - i.popularity;
         totalItems++;
       })
-      result[1].map(i=>{
+      result[1].items.map(i=>{
         hScore += 100 - i.popularity;
         totalItems++;
       })
-      result[2].map(i=>{
+      result[2].items.map(i=>{
         hScore += 100 - i.popularity;
         totalItems++;
       })
-      result[3].map(i=>{
+      result[3].items.map(i=>{
         hScore += 100 - i.popularity;
         totalItems++;
       })
-      result[4].map(i=>{
+      result[4].items.map(i=>{
         hScore += 100 - i.popularity;
         totalItems++;
       })
-      result[5].map(i=>{
+      result[5].items.map(i=>{
         hScore += 100 - i.popularity;
         totalItems++;
       })
