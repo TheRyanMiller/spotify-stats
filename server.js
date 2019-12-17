@@ -31,9 +31,7 @@ const router = express.Router();
 let ip="http://192.168.1.188"; //Ryan's house
 
 let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? "http://music-rankings.com/callback" : ip+":3001/callback"
-if(window.location.href.indexOf("heroku.com")>-1){
-  redirect_uri="https://spotify-rankings.herokuapp.com/callback";
-}
+
 
 // connects our back end code with the database;
 
