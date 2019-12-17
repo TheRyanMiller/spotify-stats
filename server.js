@@ -71,6 +71,7 @@ let generateRandomString = function(length) {
 let stateKey = 'spotify_auth_state';
 
 app.use(express.static(path.join(__dirname, "client", "build")))
+  .use(cors())
 app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
@@ -116,11 +117,6 @@ app.get('/callback', function(req, res) {
   let state = req.query.state || null;
   let storedState = req.cookies ? req.cookies[stateKey] : null;
 
-  console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-        console.log("INSIDE CALLBACK code: ", req.query.code)
-        console.log("INSIDE CALLBACK query: ", req.query)
-        console.log("INSIDE CALLBACK state: ", req.state)
-        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
   
   if (state === null || state !== storedState) {
     res.redirect(baseUrl+"/#" + 

@@ -179,11 +179,7 @@ function App() {
         }
         hScore += 100 - i.popularity;
         totalItems++;
-      })
-      console.log("top track",topPopTrack)
-      console.log("least track", leastPopTrack)
-      console.log("top artist",topPopArtist)
-      console.log("least artist",leastPopArtist)
+      });
       
       setHipsterScore((hScore/totalItems).toFixed(2));
       setBestOf({
@@ -324,7 +320,7 @@ function App() {
   const buildArtistList = (artists) => {
     let rows = artists.map((artist,idx) => {
       return (
-        <ArtistTile artist={artist} idx={idx} click={handleClick} />
+        <ArtistTile artist={artist} idx={idx} key={artist.id} click={handleClick} />
 
       )
     })
@@ -443,7 +439,7 @@ function App() {
 
   let hipsterOMeter = (<div className="center">
     <ReactSpeedometer 
-      value={hipsterScore}
+      value={Number(hipsterScore)}
       minValue={0}
       maxValue={100}
       needleTransitionDuration={3000}
