@@ -231,10 +231,8 @@ function App() {
   let ip = "http://192.168.1.188";
   //let serverip = "http://192.168.1.188:3001"
   
-  let isProd = process.env.isPROD ? true : false;
-  if(isProd) {
-    //clientip = "https://spotify-rankings.herokuapp.com";
-    //serverip = "https://spotify-rankings.herokuapp.com";
+  if(process.env.isPROD === "true") {
+    ip = "https://spotify-rankings.herokuapp.com";
   }
   
 
@@ -293,14 +291,14 @@ function App() {
 
 
   const handleLogin = () => {
-    if(isProd) window.location.href = "https://spotify-rankings.herokuapp.com"+'/login';
-    if(!isProd) window.location.href = ip+':3001/login';
+    if(process.env.isPROD === "true") window.location.href = ip+'/login';
+    if(!process.env.isPROD === "true") window.location.href = ip+':3001/login';
     
   }
   
   const handleLogout = () => {
-    if(isProd) window.location.href = "https://spotify-rankings.herokuapp.com"+'/logout';
-    if(!isProd) window.location.href = ip+':3001/logout';
+    if(process.env.isPROD === "true") window.location.href = ip+'/logout';
+    if(!process.env.isPROD === "true") window.location.href = ip+':3001/logout';
   }
 
   let loginLink = (
