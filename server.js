@@ -76,6 +76,14 @@ app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
 app.get('/login', function(req, res) {
+  console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        console.log("LOGIN LOGIN LLOGIN LOGIN LOGIN:")
+        console.log("login: ", req)
+        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
   let state = generateRandomString(16);
   res.cookie(stateKey, state);
   // your application requests authorization
@@ -91,10 +99,8 @@ app.get('/login', function(req, res) {
 });
 
 app.get('/logout', function(req, res) {
-
   let state = generateRandomString(16);
   res.cookie(stateKey, state);
-
   // your application requests authorization
   let scope = 'user-read-private user-read-email user-top-read';
   res.redirect('https://accounts.spotify.com/authorize?' +
