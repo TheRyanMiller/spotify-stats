@@ -208,7 +208,8 @@ function App() {
       });
       instance.post('/postTracks', { data: {
         tracks: allTracks,
-        user: currentUser
+        user: currentUser,
+        hipsterScore: hipsterScore
       }})
       .then((err, response) => {      })
       .catch(err => console.log(err))
@@ -424,19 +425,19 @@ function App() {
     <div className="bestOf">
       <div className="bestOfb">
         <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.topArtist.imgUrl : ""} /> 
-        <p>Most popular artist in your lists: <b>{bestOfSet ? bestOf.topArtist.name : ""}</b></p>
+        <p>Most popular artist in rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.topArtist.name : ""}</b></span></p>
       </div>
       <div className="bestOfb">
         <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.leastArtist.imgUrl : ""} />
-        <p>Least popular artist in your lists: <b>{bestOfSet ? bestOf.leastArtist.name : ""}</b></p>
+        <p>Least popular artist in rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.leastArtist.name : ""}</b></span></p>
       </div>
       <div className="bestOfb">
         <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.topTrack.imgUrl : ""} />
-        <p>Most popular song in your lists: <b>{bestOfSet ? bestOf.topTrack.name : ""}</b></p>
+        <p>Most popular song in rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.topTrack.name : ""}</b></span></p>
       </div>
       <div className="bestOfb">
         <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.leastTrack.imgUrl : ""} />
-        <p>Least popular song in your lists: <b>{bestOfSet ? bestOf.leastTrack.name : ""}</b></p>
+        <p>Least popular song in rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.leastTrack.name : ""}</b></span></p>
       </div>
     </div>
   )
@@ -454,10 +455,10 @@ function App() {
       needleTranition="easeBounceIn"
       />
       <div className="fontColor paragraph">
-      <p className="center whacky large">Your Hipster Score is <span className="xlarge"><b>{hipsterScore}</b></span></p><br />
+      <p className="center large">Your Hipster-o-Meter score is <span className="xlarge whacky"><b>{hipsterScore}</b></span></p><br />
 
       
-        Your Hipster score is calculated based on Spotify's "popularity" metric for 
+        Your Hipster-o-Meter score is calculated based on Spotify's "popularity" metric for 
         each of the artists and tracks found in your rankings.<br /><br />
         {bestOfDiv}
       </div>

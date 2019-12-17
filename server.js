@@ -200,11 +200,12 @@ app.use('/', router);
 
 router.post('/api/postTracks', (req, res) => {
   //return res.json({ success: true });
-  const { user, tracks } = req.body.data;
+  const { user, tracks, hipsterScore } = req.body.data;
   //newTracks = [new Tracks(tracks[0]),new Tracks(tracks[1]),new Tracks(tracks[2])];
   let trackList = new TrackList({
     list: tracks, 
-    user: user
+    user: user,
+    hipsterScore: hipsterScore
   });
   let visitLog = new VisitLog(user);
   visitLog.save(()=>{

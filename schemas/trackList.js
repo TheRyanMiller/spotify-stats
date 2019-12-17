@@ -19,6 +19,7 @@ const TrackLists = new Schema(
       ],
     }],
     user: User,
+    hipsterScore: Number
   },
   
   { timestamps: true }
