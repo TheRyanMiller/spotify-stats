@@ -27,7 +27,6 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 const router = express.Router();
-let isProd = process.env.REACT_APP_ISPROD ? true : false;
 //var ip="http://10.0.0.131"; //Carrah's house
 var ip="http://192.168.1.188"; //Ryan's house
 

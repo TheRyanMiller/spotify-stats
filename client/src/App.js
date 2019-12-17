@@ -296,7 +296,7 @@ function App() {
       window.location.href = ip+'/login';
       console.log("Evaluated true. IP is: ",ip+'/login')
     }
-    if(!process.env.REACT_APP_ISPROD === "true"){
+    if(!process.env.REACT_APP_ISPROD || !process.env.REACT_APP_ISPROD === "true"){
       window.location.href = ip+':3001/login';
       console.log("Evaluated false. IP is: ",ip+':3001/login')
     }
@@ -305,7 +305,7 @@ function App() {
   
   const handleLogout = () => {
     if(process.env.REACT_APP_ISPROD === "true") window.location.href = ip+'/logout';
-    if(!process.env.REACT_APP_ISPROD === "true") window.location.href = ip+':3001/logout';
+    if(!process.env.REACT_APP_ISPROD || !process.env.REACT_APP_ISPROD === "true") window.location.href = ip+':3001/logout';
   }
 
   let loginLink = (
