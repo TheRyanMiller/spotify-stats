@@ -29,8 +29,8 @@ app.use(cors());
 const router = express.Router();
 //var ip="http://10.0.0.131"; //Carrah's house
 let ip="http://192.168.1.188"; //Ryan's house
-let baseUrl = "http://music-rankings.com";
-let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? "http://music-rankings.com/callback" : baseUrl+":3001/callback"
+let baseUrl = process.env.REACT_APP_ISPROD === "true"  ? "http://music-rankings.com" : ip+":3000";
+let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? baseUrl+"/callback" : ip+":3001/callback"
 
 
 // connects our back end code with the database;
@@ -78,7 +78,7 @@ app.use(express.static(__dirname + '/public'))
 app.get('/login', function(req, res) {
 
   console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-  console.log("IN LOGIN")
+  console.log("IN LOGIN. baseurl = ", req.baseUrl)
   console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
   let state = generateRandomString(16);
   res.cookie(stateKey, state);
