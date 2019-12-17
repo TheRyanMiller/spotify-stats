@@ -46,7 +46,7 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
-let dest = "https://spotify-rankings.herokuapp.com/#";
+let dest = "http://music-rankings.com/#";
 
 if(!(process.env.REACT_APP_ISPROD || process.env.REACT_APP_ISPROD === "true")) dest = ip+":3000/#";
 
