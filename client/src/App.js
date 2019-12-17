@@ -100,7 +100,7 @@ function App() {
         hScore += 100 - i.popularity;
         totalItems++;
       })
-      setHipsterScore((hScore/totalItemsdec).toFixed(2));
+      setHipsterScore((hScore/totalItems).toFixed(2));
       
       sortUser(result[6]);
     })
