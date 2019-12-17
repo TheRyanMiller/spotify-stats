@@ -236,6 +236,7 @@ function App() {
   
   if(process.env.REACT_APP_ISPROD === "true") {
     ip = "https://spotify-rankings.herokuapp.com";
+    ip = "music-rankings.com";
   }
   
 
@@ -295,7 +296,7 @@ function App() {
 
   const handleLogin = () => {
     if(process.env.REACT_APP_ISPROD === "true") {
-      window.location.href = ip+'/login';
+      window.location.href = '/login';
     }
     if(!process.env.REACT_APP_ISPROD || !process.env.REACT_APP_ISPROD === "true"){
       window.location.href = ip+':3001/login';
@@ -304,8 +305,8 @@ function App() {
   }
   
   const handleLogout = () => {
-    if(process.env.REACT_APP_ISPROD === "true") window.location.href = ip+'/logout';
-    if(!process.env.REACT_APP_ISPROD || !process.env.REACT_APP_ISPROD === "true") window.location.href = ip+':3001/logout';
+    if(process.env.REACT_APP_ISPROD === "true") window.location.href = '/logout';
+    if(!process.env.REACT_APP_ISPROD || !process.env.REACT_APP_ISPROD === "true") window.location.href = '/logout';
   }
 
   let loginLink = (

@@ -29,7 +29,11 @@ app.use(cors());
 const router = express.Router();
 //var ip="http://10.0.0.131"; //Carrah's house
 let ip="http://192.168.1.188"; //Ryan's house
-let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback"
+
+let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? "http://music-rankings.com/callback" : ip+":3001/callback"
+if(window.location.href.indexOf("heroku.com")>-1){
+  redirect_uri="https://spotify-rankings.herokuapp.com/callback";
+}
 
 // connects our back end code with the database;
 
