@@ -29,8 +29,8 @@ app.use(cors());
 const router = express.Router();
 //var ip="http://10.0.0.131"; //Carrah's house
 let ip="http://192.168.1.188"; //Ryan's house
-
-let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? "http://music-rankings.com/callback" : ip+":3001/callback"
+let baseUrl = "http://music-rankings.com";
+let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? "http://music-rankings.com/callback" : baseUrl+":3001/callback"
 
 
 // connects our back end code with the database;
@@ -44,7 +44,6 @@ db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
-let dest = "/#";
 
 if(!(process.env.REACT_APP_ISPROD || process.env.REACT_APP_ISPROD === "true")) dest = ip+":3000/#";
 
@@ -129,7 +128,7 @@ app.get('/callback', function(req, res) {
         console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
   
   if (state === null || state !== storedState) {
-    res.redirect("/#" + 
+    res.redirect(baseUrl+"/#" + 
       querystring.stringify({
         error: 'state_mismatch'
       }));
@@ -164,13 +163,13 @@ app.get('/callback', function(req, res) {
         console.log("Entering redirect to main page wiht this AT: ", access_token)
         console.log("=============================")
         // Here I pass the token to the URLwe can also pass the token to the browser to make requests from there
-        res.redirect("/#" +  
+        res.redirect(baseUrl+"/#" +  
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect("/#" + 
+        res.redirect(baseUrl+"/#" + 
           querystring.stringify({
             error: 'invalid_token'
           }));
