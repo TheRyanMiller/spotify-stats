@@ -29,7 +29,7 @@ app.use(cors());
 const router = express.Router();
 //var ip="http://10.0.0.131"; //Carrah's house
 let ip="http://192.168.1.188"; //Ryan's house
-let baseUrl = process.env.REACT_APP_ISPROD === "true"  ? "http://music-rankings.com" : ip+":3000";
+let baseUrl = process.env.REACT_APP_ISPROD === "true"  ? "http://www.music-rankings.com" : ip+":3000";
 let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? baseUrl+"/callback" : ip+":3001/callback"
 
 
@@ -76,14 +76,7 @@ app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
 app.get('/login', function(req, res) {
-  console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-        console.log("LOGIN LOGIN LLOGIN LOGIN LOGIN:")
-        console.log("login: ", req)
-        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
-        console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+  console.log("xxxxxxxxxxxxxxxxx LOGIN xxxxxxxxxxxxxxxxxx")
   let state = generateRandomString(16);
   res.cookie(stateKey, state);
   // your application requests authorization
