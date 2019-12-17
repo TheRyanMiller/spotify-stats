@@ -46,6 +46,8 @@ let dest = "https://spotify-rankings.herokuapp.com/#";
 
 if(!process.env.isPROD) dest = ip+"#";
 
+console.log("=========THE TRUTH========",process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+"/callback")
+
 
 // USE middleware are executed every time a request is receieved
 // (optional) only made for logging and
