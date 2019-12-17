@@ -199,9 +199,7 @@ app.use('/', router);
 
 
 router.post('/api/postTracks', (req, res) => {
-  //return res.json({ success: true });
   const { user, tracks, hipsterScore } = req.body.data;
-  //newTracks = [new Tracks(tracks[0]),new Tracks(tracks[1]),new Tracks(tracks[2])];
   let trackList = new TrackList({
     list: tracks, 
     user: user,
@@ -232,8 +230,6 @@ router.post('/api/postTracks', (req, res) => {
       }
       else{console.log("Tracklog write bypassed.");}
   })
-
-  //Check db if recent records exist before saving everything
   
 });
 

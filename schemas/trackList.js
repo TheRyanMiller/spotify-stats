@@ -17,6 +17,15 @@ const TrackLists = new Schema(
           albumImgUrl: String
         }
       ],
+      artists: [
+        {
+          id:String,
+          name:String,
+          popularity: Number,
+          img: String,
+          followers: Number
+        }
+      ],
     }],
     user: User,
     hipsterScore: Number
