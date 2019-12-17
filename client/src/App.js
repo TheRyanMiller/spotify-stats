@@ -291,8 +291,16 @@ function App() {
 
 
   const handleLogin = () => {
-    if(process.env.isPROD === "true") window.location.href = ip+'/login';
-    if(!process.env.isPROD === "true") window.location.href = ip+':3001/login';
+    console.log("isProd: ",process.env.isPROD)
+    if(process.env.isPROD === "true") {
+      window.location.href = ip+'/login';
+      console.log("Evaluated true. IP is: ",ip+'/login')
+
+    }
+    if(!process.env.isPROD === "true"){
+      window.location.href = ip+':3001/login';
+      console.log("Evaluated false. IP is: ",ip+':3001/login')
+    }
     
   }
   
