@@ -118,7 +118,7 @@ app.get('/callback', function(req, res) {
   let code = req.query.code || null;
   let state = req.query.state || null;
   let storedState = req.cookies ? req.cookies[stateKey] : null;
-
+  
   if (state === null || state !== storedState) {
     res.redirect("/#" + 
       querystring.stringify({
@@ -151,12 +151,9 @@ app.get('/callback', function(req, res) {
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
         };
-
-        // print to console of Server ... use the access token to access the Spotify Web API
-        request.get(options, function(error, response, body) {
-
-        });
-
+        console.log("=============================")
+        console.log("Entering redirect to main page wiht this AT: ", access_token)
+        console.log("=============================")
         // Here I pass the token to the URLwe can also pass the token to the browser to make requests from there
         res.redirect("/#" +  
           querystring.stringify({
