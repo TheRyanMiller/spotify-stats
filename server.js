@@ -165,13 +165,13 @@ app.get('/callback', function(req, res) {
         });
 
         // Here I pass the token to the URLwe can also pass the token to the browser to make requests from there
-        res.redirect(dest +
+        res.redirect(dest +"#"+
           querystring.stringify({
             access_token: access_token,
             refresh_token: refresh_token
           }));
       } else {
-        res.redirect(dest +
+        res.redirect(dest +"#"+
           querystring.stringify({
             error: 'invalid_token'
           }));
