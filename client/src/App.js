@@ -67,20 +67,49 @@ function App() {
       spotifyApi.getMe()
 
     ]).then(result => {
+      let hScore=0;
+      let totalItems=0;
       sortTopArtists(result[0],"short_term");
       sortTopArtists(result[1],"medium_term");
       sortTopArtists(result[2],"long_term");
       sortTopTracks(result[3],"short_term");
       sortTopTracks(result[4],"medium_term");
       sortTopTracks(result[5],"long_term");
+
+      result[0].map(i=>{
+        hScore += 100 - i.popularity;
+        totalItems++;
+      })
+      result[1].map(i=>{
+        hScore += 100 - i.popularity;
+        totalItems++;
+      })
+      result[2].map(i=>{
+        hScore += 100 - i.popularity;
+        totalItems++;
+      })
+      result[3].map(i=>{
+        hScore += 100 - i.popularity;
+        totalItems++;
+      })
+      result[4].map(i=>{
+        hScore += 100 - i.popularity;
+        totalItems++;
+      })
+      result[5].map(i=>{
+        hScore += 100 - i.popularity;
+        totalItems++;
+      })
+      setHipsterScore(hScore/totalItems);
+      
       sortUser(result[6]);
     })
   },[])
 
   useEffect(() =>{
     if(Object.keys(currentUser).length>0){
+      //Calculate
       let allTracks = [{term:"short_term",tracks:topTracksShort},{term:"medium_term",tracks:topTracksMedium},{term:"long_term",tracks:topTracksLong},{term:"short_term",artists:topArtistsShort},{term:"medium_term",artists:topArtistsMedium},{term:"long_term",artists:topArtistsLong}];
-      //Run Hipster-ometer logic
       let instance = axios.create({
         baseURL: process.env.REACT_APP_API_PROD || process.env.REACT_APP_API,
         timeout: 10000,
@@ -287,15 +316,15 @@ function App() {
 
   let durationButtons = (<div>
     <ButtonGroup className="someSpace btn-xsm" aria-label="Term">
-              <Button size="sm" value="short_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="short_term" ? "primary" : "secondary" }>past 4 weeks</Button>
-              <Button size="sm" value="medium_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="medium_term" ? "primary" : "secondary" }>past 6 months</Button>
+              <Button size="sm" value="short_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="short_term" ? "primary" : "secondary" }>Past 4 weeks</Button>
+              <Button size="sm" value="medium_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="medium_term" ? "primary" : "secondary" }>Past 6 months</Button>
               <Button size="sm" value="long_term" onClick={handleDurationClick} size="sm" variant={ selectedDuration==="long_term" ? "primary" : "secondary" }>All-time</Button>
             </ButtonGroup>
       </div>)
 
   let hipsterOMeter = (<div className="center">
     <ReactSpeedometer 
-      value={88}
+      value={hipsterScore}
       minValue={0}
       maxValue={100}
       needleTransitionDuration={3000}
