@@ -90,7 +90,7 @@ app.get('/login', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: "https://spotify-rankings.herokuapp.com/callback" //process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+      redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
       state: state
     }));
 });
@@ -107,7 +107,7 @@ app.get('/logout', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: "https://spotify-rankings.herokuapp.com/callback" //process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+      redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
       state: state,
       show_dialog:true
     }));
@@ -134,7 +134,7 @@ app.get('/callback', function(req, res) {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
-        redirect_uri: "https://spotify-rankings.herokuapp.com/callback"//process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+        redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.isPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
         grant_type: 'authorization_code'
       },
       headers: {
