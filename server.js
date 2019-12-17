@@ -43,11 +43,7 @@ let client_id = process.env.SPOTIFY_CLIENT_ID; // Your client id
 let client_secret = process.env.SPOTIFY_CLIENT_SECRET; // Your secret
 let dest = "https://spotify-rankings.herokuapp.com/#";
 
-if(!(process.env.REACT_APP_ISPROD || process.env.REACT_APP_ISPROD === "true")) dest = ip+"#/3000";
-
-console.log("=========THE TRUTH========",dest)
-console.log("=========THE TRUTH2========",(process.env.REACT_APP_ISPROD || process.env.REACT_APP_ISPROD === "true"))
-
+if(!(process.env.REACT_APP_ISPROD || process.env.REACT_APP_ISPROD === "true")) dest = ip+":3000/#";
 
 // USE middleware are executed every time a request is receieved
 // (optional) only made for logging and
@@ -81,8 +77,6 @@ app.get('/login', function(req, res) {
 
   let state = generateRandomString(16);
   res.cookie(stateKey, state);
-  console.log("=====================CHECKING IN FRONT OF CALL");
-  console.log(ip+":3001/callback");
   // your application requests authorization
   let scope = 'user-read-private user-read-email user-top-read';
   res.redirect('https://accounts.spotify.com/authorize?' +
@@ -90,7 +84,7 @@ app.get('/login', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.REACT_APP_ISPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+      redirect_uri: process.env.REACT_APP_ISPROD === "true"  ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
       state: state
     }));
 });
@@ -107,7 +101,7 @@ app.get('/logout', function(req, res) {
       response_type: 'code',
       client_id: client_id,
       scope: scope,
-      redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.REACT_APP_ISPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+      redirect_uri: process.env.REACT_APP_ISPROD === "true"  ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
       state: state,
       show_dialog:true
     }));
@@ -134,7 +128,7 @@ app.get('/callback', function(req, res) {
       url: 'https://accounts.spotify.com/api/token',
       form: {
         code: code,
-        redirect_uri: "https://spotify-rankings.herokuapp.com/callback", //process.env.REACT_APP_ISPROD ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
+        redirect_uri: process.env.REACT_APP_ISPROD === "true" ? "https://spotify-rankings.herokuapp.com/callback" : ip+":3001/callback",
         grant_type: 'authorization_code'
       },
       headers: {
@@ -157,7 +151,7 @@ app.get('/callback', function(req, res) {
 
         // print to console of Server ... use the access token to access the Spotify Web API
         request.get(options, function(error, response, body) {
-          console.log(body);
+
         });
 
         // Here I pass the token to the URLwe can also pass the token to the browser to make requests from there
@@ -204,7 +198,6 @@ app.use('/', router);
 
 
 router.post('/api/postTracks', (req, res) => {
-  console.log("TRYING------------xxxxxxxxx--------");
   //return res.json({ success: true });
   const { user, tracks } = req.body.data;
   //newTracks = [new Tracks(tracks[0]),new Tracks(tracks[1]),new Tracks(tracks[2])];
@@ -222,15 +215,13 @@ router.post('/api/postTracks', (req, res) => {
     "user.id" : uid, 
     createdAt: {$gte: new Date((new Date().getTime() - (14 * 24 * 60 * 60 * 1000)))}
   };
-  console.log("=======FIND DATA=====");
 
   let writeEnabled = true;
-  TrackList.find(
-    query,(err, data)=>{
-      data.map(obj => {
-        //console.log(obj.user.display_name);
-      })
-      if(data.length>0){
+  console.log("Checking count...")
+  TrackList.countDocuments(
+    query,(err, count)=>{
+      console.log("Count = ",count)
+      if(count>0){
         writeEnable = false;
         console.log("Write Disabled")
       }

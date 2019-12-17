@@ -291,14 +291,11 @@ function App() {
 
 
   const handleLogin = () => {
-    console.log("isProd: ",process.env.REACT_APP_ISPROD)
     if(process.env.REACT_APP_ISPROD === "true") {
       window.location.href = ip+'/login';
-      console.log("Evaluated true. IP is: ",ip+'/login')
     }
     if(!process.env.REACT_APP_ISPROD || !process.env.REACT_APP_ISPROD === "true"){
       window.location.href = ip+':3001/login';
-      console.log("Evaluated false. IP is: ",ip+':3001/login')
     }
     
   }
@@ -457,8 +454,8 @@ function App() {
       <p className="center whacky">Your Hipster Score is <span className="xlarge"><b>{hipsterScore}</b></span></p><br />
 
       
-        Your Hipster score is calculated using a patented, highly confidential, and top secret algorithm based on Spotify's "popularity" metric for 
-        each of the artists and tracks in your rankings. <br /><br />
+        Your Hipster score is calculated based on Spotify's "popularity" metric for 
+        each of the artists and tracks found in your rankings.<br /><br />
         {bestOfDiv}
       </div>
       </div>)
@@ -510,7 +507,7 @@ function App() {
 
   let homepage = <div className="fontColor center">
     <h1>Spotify Stats</h1>
-    <p>Login to see a listing of your top played artists and songs.... oh and also to see your hipster score.</p>
+    <p className="paragraph">Login to see a listing of your top played artists and songs.</p>
     {loginLink}
   </div>
 
