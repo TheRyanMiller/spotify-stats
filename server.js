@@ -78,6 +78,9 @@ app.use(express.static(__dirname + '/public'))
 
 app.get('/login', function(req, res) {
 
+  console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
+  console.log("IN LOGIN")
+  console.log("xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx")
   let state = generateRandomString(16);
   res.cookie(stateKey, state);
   // your application requests authorization
