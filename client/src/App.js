@@ -229,7 +229,7 @@ function App() {
   let ip = "http://192.168.1.188";
   
   if(process.env.REACT_APP_ISPROD === "true") {
-    ip = "http://www.music-rankings.com";
+    ip = "https://www.music-rankings.com";
   }
   
 

@@ -29,7 +29,7 @@ app.use(cors());
 const router = express.Router();
 //var ip="http://10.0.0.131"; //Carrah's house
 let ip="http://192.168.1.188"; //Ryan's house
-let baseUrl = process.env.REACT_APP_ISPROD === "true"  ? "http://www.music-rankings.com" : ip+":3000";
+let baseUrl = process.env.REACT_APP_ISPROD === "true"  ? "https://www.music-rankings.com" : ip+":3000";
 let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? baseUrl+"/callback" : ip+":3001/callback"
 
 
