@@ -12,7 +12,6 @@ import ReactSpeedometer from "react-d3-speedometer"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 
-
 function App() {
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -258,10 +257,13 @@ function App() {
         "imgUrl":item.images[2] ? item.images[2].url : ""
       }
     })
-    if(term === "short_term") setTopArtistsShort(artists);
-    setTopArtists(artists);
+    if(term === "short_term") {
+      setTopArtistsShort(artists);
+      setTopArtists(artists); //This line sets the default upon arrival
+    }
     if(term === "medium_term") setTopArtistsMedium(artists);
     if(term === "long_term") setTopArtistsLong(artists);
+    
   }
 
   const sortTopTracks = (data,term) => {
@@ -420,19 +422,19 @@ function App() {
     <div className="bestOf">
       <div className="bestOfb">
         <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.topArtist.imgUrl : ""} /> 
-        <p>Most popular artist in rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.topArtist.name : ""}</b></span></p>
+        <p className="small">Most popular artist in your rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.topArtist.name : ""}</b></span></p>
       </div>
       <div className="bestOfb">
         <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.leastArtist.imgUrl : ""} />
-        <p>Least popular artist in rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.leastArtist.name : ""}</b></span></p>
+        <p className="small">Least popular artist in your rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.leastArtist.name : ""}</b></span></p>
       </div>
       <div className="bestOfb">
         <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.topTrack.imgUrl : ""} />
-        <p>Most popular song in rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.topTrack.name : ""}</b></span></p>
+        <p className="small">Most popular song in your rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.topTrack.name : ""}</b></span></p>
       </div>
       <div className="bestOfb">
         <img className="bestOfBorder" height="100px" width="100px" src={bestOfSet ? bestOf.leastTrack.imgUrl : ""} />
-        <p>Least popular song in rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.leastTrack.name : ""}</b></span></p>
+        <p className="small">Least popular song in your rankings:<br /> <span className="fontColor"><b>{bestOfSet ? bestOf.leastTrack.name : ""}</b></span></p>
       </div>
     </div>
   )

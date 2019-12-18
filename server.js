@@ -71,7 +71,7 @@ let generateRandomString = function(length) {
 let stateKey = 'spotify_auth_state';
 
 app.use(express.static(path.join(__dirname, "client", "build")))
-  .use(cors())
+  .use(cors()) //adding this was the trick to make my API calls work
 app.use(express.static(__dirname + '/public'))
    .use(cors())
    .use(cookieParser());
