@@ -226,7 +226,13 @@ router.post('/api/postTracks', (req, res) => {
           return res.json({ success: true });
         });
       }
-      else{console.log("Tracklog write bypassed.");}
+      else{
+        console.log("Tracklog write bypassed.");
+        return res.json({ 
+          success: true,
+          message: "No was data saved." 
+        });
+      }
   })
   
 });
