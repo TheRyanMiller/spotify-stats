@@ -77,7 +77,6 @@ app.use(express.static(__dirname + '/public'))
    .use(cookieParser());
 
 app.get('/login', function(req, res) {
-  console.log("xxxxxxxxxxxxxxxxx LOGIN xxxxxxxxxxxxxxxxxx")
   let state = generateRandomString(16);
   res.cookie(stateKey, state);
   // your application requests authorization
@@ -150,9 +149,6 @@ app.get('/callback', function(req, res) {
           headers: { 'Authorization': 'Bearer ' + access_token },
           json: true
         };
-        console.log("=============================")
-        console.log("Entering redirect to main page wiht this AT: ", access_token)
-        console.log("=============================")
         // Here I pass the token to the URLwe can also pass the token to the browser to make requests from there
         res.redirect(baseUrl+"/#" +  
           querystring.stringify({
@@ -215,7 +211,7 @@ router.post('/api/postTracks', (req, res) => {
   };
 
   TrackList.countDocuments(
-    query,(err, count)=>{
+    query,(err, count)=>{ 
       console.log("Count = ",count)
       if(count===0){
         trackList.markModified('list');

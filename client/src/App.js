@@ -456,7 +456,7 @@ function App() {
 
       
         Your Hipster-o-Meter score is calculated based on Spotify's "popularity" metric for 
-        each of the artists and tracks found in your rankings.<br /><br />
+        each of the artists and tracks found in your rankings. The HIGHER the score, the more hipster you are (this means you listen to lesser popular artists/songs).<br /><br />
         {bestOfDiv}
       </div>
       </div>)
