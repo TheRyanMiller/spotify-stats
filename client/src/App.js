@@ -199,8 +199,9 @@ function App() {
       let instance = axios.create({
         baseURL: process.env.REACT_APP_API_PROD || process.env.REACT_APP_API,
         timeout: 10000,
-        headers: {'X-Custom-Header': 'foobar'}
+        headers: {}
       });
+      console.log("axios instance", instance);
       instance.post('/postTracks', { data: {
         tracks: allTracks,
         user: currentUser,
