@@ -11,6 +11,7 @@ import './styles/custom.scss';
 import ReactSpeedometer from "react-d3-speedometer"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faSpotify } from '@fortawesome/free-brands-svg-icons';
+let hipsterAlgo = require('./algos/hipsterScore');
 
 function App() {
 
@@ -61,135 +62,32 @@ function App() {
     if(token && !isLoggedIn) setIsLoggedIn(true);
     const spotifyApi = new SpotifyWebApi();
     if (token) {
-      spotifyApi.setAccessToken(token);
-    }  
-    Promise.all([      
-      spotifyApi.getMyTopArtists({time_range:"short_term", limit:50}),
-      spotifyApi.getMyTopArtists({time_range:"medium_term", limit:50}),
-      spotifyApi.getMyTopArtists({time_range:"long_term", limit:50}),
-      spotifyApi.getMyTopTracks({time_range:"short_term", limit:50}),
-      spotifyApi.getMyTopTracks({time_range:"medium_term", limit:50}),
-      spotifyApi.getMyTopTracks({time_range:"long_term", limit:50}),
-      spotifyApi.getMe()
+      spotifyApi.setAccessToken(token);  
+      Promise.all([      
+        spotifyApi.getMyTopArtists({time_range:"short_term", limit:50}),
+        spotifyApi.getMyTopArtists({time_range:"medium_term", limit:50}),
+        spotifyApi.getMyTopArtists({time_range:"long_term", limit:50}),
+        spotifyApi.getMyTopTracks({time_range:"short_term", limit:50}),
+        spotifyApi.getMyTopTracks({time_range:"medium_term", limit:50}),
+        spotifyApi.getMyTopTracks({time_range:"long_term", limit:50}),
+        spotifyApi.getMe()
 
-    ]).then(result => {
-      let hScore=0;
-      let totalItems=0;
-      let topPopArtist = {popularity:0};
-      let leastPopArtist = {popularity:100};
-      let topPopTrack = {popularity:0};
-      let leastPopTrack = {popularity:100};
-      sortTopArtists(result[0],"short_term");
-      sortTopArtists(result[1],"medium_term");
-      sortTopArtists(result[2],"long_term");
-      sortTopTracks(result[3],"short_term");
-      sortTopTracks(result[4],"medium_term");
-      sortTopTracks(result[5],"long_term");
-
-      result[0].items.map(i=>{
-        if(i.popularity>topPopArtist.popularity) {
-          let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
-          topPopArtist.name = i.name;
-          topPopArtist.popularity = i.popularity;
-          topPopArtist.imgUrl = imgUrl;
-        }
-        if(i.popularity<leastPopArtist.popularity) {
-          let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
-          leastPopArtist.name = i.name;
-          leastPopArtist.popularity = i.popularity;
-          leastPopArtist.imgUrl = imgUrl;
-        }
-        hScore += 100 - i.popularity;
-        totalItems++;
+      ]).then(result => {
+        sortTopArtists(result[0],"short_term");
+        sortTopArtists(result[1],"medium_term");
+        sortTopArtists(result[2],"long_term");
+        sortTopTracks(result[3],"short_term");
+        sortTopTracks(result[4],"medium_term");
+        sortTopTracks(result[5],"long_term");
+        
+        let calculated = hipsterAlgo(result);
+        setHipsterScore(calculated.hipsterScore);
+        setBestOf(calculated.bestOf);
+        
+        sortUser(result[6]);
+        setBestOfSet(true);
       })
-      result[1].items.map(i=>{
-        let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
-        if(i.popularity>topPopArtist.popularity) {
-          topPopArtist.name = i.name;
-          topPopArtist.popularity = i.popularity;
-          topPopArtist.imgUrl = imgUrl;
-        }
-        if(i.popularity<leastPopArtist.popularity) {
-          let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
-          leastPopArtist.name = i.name;
-          leastPopArtist.popularity = i.popularity;
-          leastPopArtist.imgUrl = imgUrl;
-        }
-        hScore += 100 - i.popularity;
-        totalItems++;
-      })
-      result[2].items.map(i=>{
-        let imgUrl = i.images ? (i.images[2] ? i.images[2].url : "") : "";
-        if(i.popularity>topPopArtist.popularity) {
-          topPopArtist.name = i.name;
-          topPopArtist.popularity = i.popularity;
-          topPopArtist.imgUrl = imgUrl;
-        }
-        if(i.popularity<leastPopArtist.popularity) {
-          leastPopArtist.name = i.name;
-          leastPopArtist.popularity = i.popularity;
-          leastPopArtist.imgUrl = imgUrl;
-        }
-        hScore += 100 - i.popularity;
-        totalItems++;
-      })
-      result[3].items.map(i=>{
-        let imgUrl = i.album.images ? (i.album.images[1] ? i.album.images[1].url : "") : "";
-        if(i.popularity>topPopTrack.popularity) {
-          topPopTrack.name = i.name;
-          topPopTrack.popularity = i.popularity;
-          topPopTrack.imgUrl = imgUrl;
-        }
-        if(i.popularity<leastPopTrack.popularity) {
-          leastPopTrack.name = i.name;
-          leastPopTrack.popularity = i.popularity;
-          leastPopTrack.imgUrl = imgUrl;
-        }
-        hScore += 100 - i.popularity;
-        totalItems++;
-      })
-      result[4].items.map(i=>{
-        let imgUrl = i.album.images ? (i.album.images[1] ? i.album.images[1].url : "") : "";
-        if(i.popularity>topPopTrack.popularity) {
-          topPopTrack.name = i.name;
-          topPopTrack.popularity = i.popularity;
-          topPopTrack.imgUrl = imgUrl;
-        }
-        if(i.popularity<leastPopTrack.popularity) {
-          leastPopTrack.name = i.name;
-          leastPopTrack.popularity = i.popularity;
-          leastPopTrack.imgUrl = imgUrl;
-        }
-        hScore += 100 - i.popularity;
-        totalItems++;
-      })
-      result[5].items.map(i=>{
-        if(i.popularity>topPopTrack.popularity) {
-          let imgUrl = i.album.images ? (i.images[1] ? i.album.images[1].url : "") : "";
-          topPopTrack.name = i.name;
-          topPopTrack.popularity = i.popularity;
-          topPopTrack.imgUrl = imgUrl;
-        }
-        if(i.popularity<leastPopTrack.popularity) {
-          let imgUrl = i.album.images ? (i.album.images[1] ? i.album.images[1].url : "") : "";
-          leastPopTrack.name = i.name;
-          leastPopTrack.popularity = i.popularity;
-          leastPopTrack.imgUrl = imgUrl;
-        }
-        hScore += 100 - i.popularity;
-        totalItems++;
-      });
-      
-      setHipsterScore((hScore/totalItems).toFixed(2));
-      setBestOf({
-        "topArtist":topPopArtist,
-        "leastArtist":leastPopArtist,
-        "topTrack":topPopTrack,
-        "leastTrack":leastPopTrack
-      })
-      sortUser(result[6]);
-      setBestOfSet(true);
-    })
+    }
   },[])
 
   useEffect(() =>{
@@ -201,7 +99,7 @@ function App() {
         timeout: 10000,
         headers: {}
       });
-      console.log("axios instance", instance);
+      
       instance.post('/postTracks', { data: {
         tracks: allTracks,
         user: currentUser,
@@ -319,7 +217,6 @@ function App() {
     </div>
   )
   
-
   const buildArtistList = (artists) => {
     let rows = artists.map((artist,idx) => {
       return (

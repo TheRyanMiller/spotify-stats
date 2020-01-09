@@ -49,10 +49,6 @@
     box-shadow: 1px 1px 1px #000000;
   }
   
-  .row:hover{
-    background-color: rgb(71, 71, 71);
-  }
-  
   .green{
     color: rgb(82, 206, 82);
   }
