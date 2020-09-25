@@ -27,10 +27,9 @@ require('dotenv').config();
 const app = express();
 app.use(cors());
 const router = express.Router();
-//var ip="http://10.0.0.131"; //Carrah's house
-let ip="http://192.168.1.188"; //Ryan's house
+let ip="localhost:3000";
 let baseUrl = process.env.REACT_APP_ISPROD === "true"  ? "https://www.music-rankings.com" : ip+":3000";
-let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? baseUrl+"/callback" : ip+":3001/callback"
+let redirect_uri = process.env.REACT_APP_ISPROD === "true"  ? baseUrl+"/callback" : "localhost:3001/callback"
 
 
 // connects our back end code with the database;

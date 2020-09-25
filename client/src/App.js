@@ -6,11 +6,8 @@ import Button from 'react-bootstrap/Button';
 import ButtonGroup from 'react-bootstrap/ButtonGroup';
 import ArtistTile from './components/artistTile';
 import TrackTile from './components/trackTile';
-import Auxx from './components/hoc/auxx';
 import './styles/custom.scss';
 import ReactSpeedometer from "react-d3-speedometer"
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faSpotify } from '@fortawesome/free-brands-svg-icons';
 let hipsterAlgo = require('./algos/hipsterScore');
 
 function App() {
@@ -206,8 +203,9 @@ function App() {
 
   let loginLink = (
     <div>
+      
       <Button className="large" onClick={handleLogin}> 
-                <FontAwesomeIcon className="" icon={faSpotify} />  Login to Spotify</Button>
+        <i class="fa fa-spotify" style={{fontSize:"24px",color:"black"}}></i> Login to Spotify</Button>
     </div>
   )
 
