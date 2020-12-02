@@ -407,6 +407,8 @@ function App() {
     <p className="paragraph center">Login to view your top artist and song rankings on Spotify.</p>
     <br />
     {loginLink}
+    <br />
+    <i>Made with 💚 by <a href="https://theryanmiller.com/">Ryan Miller</a></i>
   </div>
 
   return (
